@@ -6,7 +6,12 @@ import java.util.Arrays;
 //got rid of that pigeon import bc  for some reason it wasn't getting the values of old class
 //import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.revrobotics.spark.config.SparkBaseConfig;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+//import com.ctre.phoenixpro.signals.StatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 //import com.kauailabs.navx.frc.AHRS;
 // import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -21,6 +26,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import edu.wpi.first.wpilibj.SPI;
@@ -56,7 +62,16 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kBlueDriveAbsoluteEncoderOffset,
                 Constants.kBlueDriveAbsoluteEncoderReversed);
 
-        blue.getDriveMotor().setInverted(false);
+        // SparkBaseConfig blueMotorConfig = new SparkBaseConfig();
+        // blueMotorConfig.inverted(true);  // Set to true for inverted, false for normal
+
+        // // Apply the configuration to the motor controller
+        // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
+        SparkMaxConfig motorConfig = new SparkMaxConfig();
+
+// Set the motor inversion state (true = inverted, false = normal)
+        motorConfig.inverted = true; 
+        blue.getSteeringMotor().setConfiguration(motorConfig);
 
         orange = new SwerveModule(
                 Constants.orangeDrive,
@@ -126,27 +141,27 @@ public class SwerveDrive extends SubsystemBase {
             
     // );
 
-        AutoBuilder.configureHolonomic(
-        this::getPose, // Robot pose supplier
-        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-        this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::driveRobot, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            AutoConstants.KTranslationHolonomicPID, // Translation PID constants
-            AutoConstants.KRotationHolonomicPID, // Rotation PID constants
-            AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-            AutoConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
-        () -> {
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()){
-                return alliance.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-        },
-        this // Reference to this subsystem to set requirements
-    );
+    //     AutoBuilder.configureHolonomic(
+    //     this::getPose, // Robot pose supplier
+    //     this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+    //     this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //     this::driveRobot, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //         AutoConstants.KTranslationHolonomicPID, // Translation PID constants
+    //         AutoConstants.KRotationHolonomicPID, // Rotation PID constants
+    //         AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
+    //         AutoConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
+    //         new ReplanningConfig() // Default path replanning config. See the API for the options here
+    //     ),
+    //     () -> {
+    //         var alliance = DriverStation.getAlliance();
+    //         if (alliance.isPresent()){
+    //             return alliance.get() == DriverStation.Alliance.Red;
+    //         }
+    //         return false;
+    //     },
+    //     this // Reference to this subsystem to set requirements
+    // );
 
         }
 
@@ -262,7 +277,11 @@ public class SwerveDrive extends SubsystemBase {
     
     public Rotation2d getRotation2D() {
         //gets pigeon value for rotation in degrees, converts to radians
-        double numDegrees = pigeon.getYaw().getValue();
+        //double numDegrees = pigeon.getYaw().getValue();
+        // StatusSignal<Angle> yawSignal = pigeon.getYaw();
+        // double numDegrees = yawSignal.getAngle();
+        //double numDegrees = pigeon.getYaw().refresh().getValue().getRadians();
+        double numDegrees = pigeon.getYaw().getRadians();
         double radians = numDegrees * (Math.PI/180);
         return new Rotation2d(radians);
     }

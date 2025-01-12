@@ -3,10 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorPosition;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 //import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,8 +20,8 @@ import frc.robot.Constants;
 
 public class SwerveModule {
 
-    private final CANSparkMax driveMotor;
-    private final CANSparkMax turningMotor;
+    private final SparkMax driveMotor;
+    private final SparkMax turningMotor;
 
     private final PIDController turningPidController;
 
@@ -51,8 +51,8 @@ public class SwerveModule {
 
         absoluteEncoder.getConfigurator().apply(config);
 
-        driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
-        turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
+        driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
+        turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
 
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed);
@@ -73,11 +73,11 @@ public class SwerveModule {
     //     return absoluteEncoder.getAbsolutePosition().getValue();
     // }
 
-    public CANSparkMax getDriveMotor() {
+    public SparkMax getDriveMotor() {
     return driveMotor;
     }
 
-    public CANSparkMax getSteeringMotor() {
+    public SparkMax getSteeringMotor() {
     return turningMotor;
     }
 

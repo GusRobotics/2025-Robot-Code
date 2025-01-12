@@ -55,4 +55,55 @@ public final class Constants {
     public static final double kGreenDriveAbsoluteEncoderOffset = -0.416259765625;
     public static final double kOrangeDriveAbsoluteEncoderOffset = -0.37646484375;
     public static final double kRedDriveAbsoluteEncoderOffset = 0.18896484375;
+
+    public static final int driveMotorCurrentLimit = 45;
+
+    public static final boolean kBlueTurningEncoderReversed = false;
+    public static final boolean kGreenTurningEncoderReversed = false;
+    public static final boolean kOrangeTurningEncoderReversed = false;
+    public static final boolean kRedTurningEncoderReversed = false;
+
+    //green and red were originally false
+    public static final boolean kBlueDriveEncoderReversed = false;
+    public static final boolean kGreenDriveEncoderReversed = false;
+    public static final boolean kOrangeDriveEncoderReversed = false;
+    public static final boolean kRedDriveEncoderReversed = false;
+
+    public static final boolean kBlueDriveAbsoluteEncoderReversed = true;
+    public static final boolean kGreenDriveAbsoluteEncoderReversed = true;
+    public static final boolean kOrangeDriveAbsoluteEncoderReversed = true;
+    public static final boolean kRedDriveAbsoluteEncoderReversed = true;
+
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+      new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+
+    public static final double kDriveMotorGearRatio = 1 / 5.8462;
+    public static final double KTurningMotorGearRatio = 1 / 18.0;
+    public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI
+      * kWheelDiameterMeters;
+    public static final double kTurningEncoderRot2Rad = KTurningMotorGearRatio * 2 * Math.PI;
+    // private static int kDriveEncoderRot2Meter;
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+    
+    //FOR TUNING - PID VALUES
+    public static final double kPTurning = 0.3;
+    public static final double kPXController = 1.5;
+    public static final double kPYController = 1.5;
+    public static final double kPThetaController = 3;
+
+    public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
+    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 8.61;
+
+    public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2.5;
+    public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
+                    kPhysicalMaxAngularSpeedRadiansPerSecond / 3;
+    public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+    public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+      kPhysicalMaxSpeedMetersPerSecond, kPhysicalMaxAngularSpeedRadiansPerSecond);
+    TrapezoidProfile.State previousProfiledReference = new TrapezoidProfile.State();
+
+    public static final double OIConstants = 0.05;
 }
