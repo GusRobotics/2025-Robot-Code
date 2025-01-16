@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.SensorPosition;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 //import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -54,8 +55,9 @@ public class SwerveModule {
         driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
 
-        driveMotor.setInverted(driveMotorReversed);
-        turningMotor.setInverted(turningMotorReversed);
+            // try to set in rev hardware client if necessary, otherwise use the 
+        // driveMotor.setInverted(true);
+        // turningMotor.setInverted(Constants.turningMotorReversed);
 
         // driveEncoder.setPosabsoluteitionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         // driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
@@ -137,7 +139,7 @@ public class SwerveModule {
              stop();
              return;
         }
-        state = SwerveModuleState.optimize(state, getState().angle);
+        state = state.optimize(getState().angle);
         driveMotor.set(state.speedMetersPerSecond / Constants.kPhysicalMaxSpeedMetersPerSecond);
         turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
         // SmartDashboard.putString("Swerve[" + absoluteEncoder.getChannel() + "]

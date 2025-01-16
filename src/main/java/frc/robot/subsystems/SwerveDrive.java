@@ -8,7 +8,6 @@ import java.util.Arrays;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.ctre.phoenixpro.signals.StatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -33,6 +32,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
 //import frc.robot.Constants.AutoConstants;
 
 public class SwerveDrive extends SubsystemBase {
@@ -70,8 +70,11 @@ public class SwerveDrive extends SubsystemBase {
         SparkMaxConfig motorConfig = new SparkMaxConfig();
 
 // Set the motor inversion state (true = inverted, false = normal)
-        motorConfig.inverted = true; 
+        
+
+        motorConfig.setInverted(true); 
         blue.getSteeringMotor().setConfiguration(motorConfig);
+        
 
         orange = new SwerveModule(
                 Constants.orangeDrive,

@@ -93,17 +93,20 @@ public final class Constants {
     public static final double kPThetaController = 3;
 
     public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
-    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 8.61;
+    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 9.3576;
 
     public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2.5;
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
                     kPhysicalMaxAngularSpeedRadiansPerSecond / 3;
     public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
-    public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
+    public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 5.64558;
 
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kPhysicalMaxSpeedMetersPerSecond, kPhysicalMaxAngularSpeedRadiansPerSecond);
     TrapezoidProfile.State previousProfiledReference = new TrapezoidProfile.State();
 
     public static final double OIConstants = 0.05;
+
+    // public static final boolean driveMotorReversed = false;
+    // public static final boolean turningMotorReversed = false;
 }
