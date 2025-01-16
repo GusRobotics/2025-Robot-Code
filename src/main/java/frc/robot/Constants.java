@@ -51,10 +51,10 @@ public final class Constants {
 
         public static final int kPigeonPort = 1;
 
-    public static final double kBlueDriveAbsoluteEncoderOffset = 0.17822265625;
-    public static final double kGreenDriveAbsoluteEncoderOffset = -0.416259765625;
-    public static final double kOrangeDriveAbsoluteEncoderOffset = -0.37646484375;
-    public static final double kRedDriveAbsoluteEncoderOffset = 0.18896484375;
+    public static final double kBlueDriveAbsoluteEncoderOffset = -0.17822265625;
+    public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;
+    public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37646484375;
+    public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
 
     public static final int driveMotorCurrentLimit = 45;
 
@@ -74,9 +74,18 @@ public final class Constants {
     public static final boolean kOrangeDriveAbsoluteEncoderReversed = true;
     public static final boolean kRedDriveAbsoluteEncoderReversed = true;
 
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-      new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+    // public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+    //   new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
 
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+    new Translation2d(kWheelBase / 2, kTrackWidth / 2),   // Front Left
+    new Translation2d(kWheelBase / 2, -kTrackWidth / 2),  // Front Right
+    new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // Back Left
+    new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)  // Back Right
+);
+
+    
+    public static final int kWheelRadius = 2;
     public static final double kDriveMotorGearRatio = 1 / 5.8462;
     public static final double KTurningMotorGearRatio = 1 / 18.0;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI
@@ -87,7 +96,7 @@ public final class Constants {
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     
     //FOR TUNING - PID VALUES
-    public static final double kPTurning = 0.3;
+    public static final double kPTurning = .1; //original value was .3
     public static final double kPXController = 1.5;
     public static final double kPYController = 1.5;
     public static final double kPThetaController = 3;

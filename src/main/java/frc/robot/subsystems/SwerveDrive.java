@@ -7,6 +7,7 @@ import java.util.Arrays;
 //import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.ctre.phoenixpro.signals.StatusSignal;
@@ -68,6 +69,7 @@ public class SwerveDrive extends SubsystemBase {
         // // Apply the configuration to the motor controller
         // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
+
 
 // Set the motor inversion state (true = inverted, false = normal)
         
@@ -254,6 +256,34 @@ public class SwerveDrive extends SubsystemBase {
         // getPose().getTranslation().toString());
         SmartDashboard.putNumber("odometry x", odometer.getPoseMeters().getX());
         SmartDashboard.putNumber("odometry y", odometer.getPoseMeters().getY());
+
+        odometer.update(getRotation2d(), getPosition());
+    
+    // Gyro and overall robot data
+    SmartDashboard.putNumber("Robot Heading", getHeading());
+    SmartDashboard.putNumber("Pigeon Raw Yaw", pigeon.getYaw().getValue().magnitude());
+    
+    // Module states
+    SmartDashboard.putNumber("Blue Turn Angle", blue.getTurningPosition());
+    SmartDashboard.putNumber("Blue Drive Speed", blue.getDriveVelocity());
+    SmartDashboard.putNumber("Blue CANCoder Raw", blue.getCancoder());
+    
+    SmartDashboard.putNumber("Red Turn Angle", red.getTurningPosition());
+    SmartDashboard.putNumber("Red Drive Speed", red.getDriveVelocity());
+    SmartDashboard.putNumber("Red CANCoder Raw", red.getCancoder());
+    
+    SmartDashboard.putNumber("Green Turn Angle", green.getTurningPosition());
+    SmartDashboard.putNumber("Green Drive Speed", green.getDriveVelocity());
+    SmartDashboard.putNumber("Green CANCoder Raw", green.getCancoder());
+    
+    SmartDashboard.putNumber("Orange Turn Angle", orange.getTurningPosition());
+    SmartDashboard.putNumber("Orange Drive Speed", orange.getDriveVelocity());
+    SmartDashboard.putNumber("Orange CANCoder Raw", orange.getCancoder());
+    
+    // Odometry
+    SmartDashboard.putNumber("Robot X Position", getPose().getX());
+    SmartDashboard.putNumber("Robot Y Position", getPose().getY());
+    SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
     }
 
     public void stopModules() {

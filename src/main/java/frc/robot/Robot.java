@@ -4,18 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.commands.SwerveJoystickCmd;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+  Rotation2d desRot = new Rotation2d(0);
   private Command m_autonomousCommand;
-
   private final RobotContainer m_robotContainer;
 
   /**
@@ -26,6 +28,14 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+  }
+
+  @Override
+  public void robotInit() {
+    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.drive, new SwerveJoystickCmd(RobotContainer.drive,
+    RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
+    RobotContainer.baseController.triangle()::getAsBoolean));
+
   }
 
   /**
@@ -79,7 +89,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {SmartDashboard.putNumber("test", 4);}
 
   @Override
   public void testInit() {
