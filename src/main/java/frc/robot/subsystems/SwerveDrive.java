@@ -72,8 +72,8 @@ public class SwerveDrive extends SubsystemBase {
 // Set the motor inversion state (true = inverted, false = normal)
         
 
-        motorConfig.setInverted(true); 
-        blue.getSteeringMotor().setConfiguration(motorConfig);
+        // motorConfig.setInverted(true); 
+        // blue.getSteeringMotor().setConfiguration(motorConfig);
         
 
         orange = new SwerveModule(
@@ -94,7 +94,7 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kGreenDriveAbsoluteEncoderOffset,
                 Constants.kGreenDriveAbsoluteEncoderReversed);
         //just invert the motors when you get oscillations when youre done
-        green.getSteeringMotor().setInverted(true);
+        //green.getSteeringMotor().setInverted(true);
 
         red = new SwerveModule(
                 Constants.redDrive,
@@ -208,7 +208,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public double getHeading() {
-        return Math.IEEEremainder(pigeon.getAngle(), 360);
+        return Math.IEEEremainder(pigeon.getYaw().getValue().magnitude(), 360);
     }
 
     public Rotation2d getRotation2d() {
@@ -284,7 +284,7 @@ public class SwerveDrive extends SubsystemBase {
         // StatusSignal<Angle> yawSignal = pigeon.getYaw();
         // double numDegrees = yawSignal.getAngle();
         //double numDegrees = pigeon.getYaw().refresh().getValue().getRadians();
-        double numDegrees = pigeon.getYaw().getRadians();
+        double numDegrees = pigeon.getYaw().getValue().magnitude();
         double radians = numDegrees * (Math.PI/180);
         return new Rotation2d(radians);
     }

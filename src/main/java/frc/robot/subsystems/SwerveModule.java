@@ -1,13 +1,16 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.ctre.phoenix6.signals.SensorPosition;
+// import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+// import com.ctre.phoenix6.signals.SensorPosition;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 //import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Angle;
 import frc.robot.Constants;
 
 //import com.ctre.phoenix6.hardware.Pigeon2;
@@ -40,7 +44,7 @@ public class SwerveModule {
         // getChannel() methods
         absoluteEncoder = new CANcoder(absoluteEncoderId);
         config.MagnetSensor.MagnetOffset = absoluteEncoderOffset;
-        config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        //config.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         //config.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         if (absoluteEncoderReversed){
              config.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
@@ -67,8 +71,6 @@ public class SwerveModule {
         turningPidController = new PIDController(Constants.kPTurning, 0, 0);
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
 
-        driveMotor.setSmartCurrentLimit(Constants.driveMotorCurrentLimit);
-        turningMotor.setSmartCurrentLimit(Constants.driveMotorCurrentLimit);
     }
 
     // public SwerveModulePosition getDrivePosition() {
@@ -84,7 +86,7 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
-        return absoluteEncoder.getAbsolutePosition().getValue() * Math.PI * 2;
+        return absoluteEncoder.getAbsolutePosition().getValue().magnitude() * Math.PI * 2;
     }
 
     public double getTurnSetPoint(){
@@ -96,7 +98,19 @@ public class SwerveModule {
     }
 
     public double getCancoder(){
-        return absoluteEncoder.getAbsolutePosition().getValue();
+        //return absoluteEncoder.getAbsolutePosition().magnitude();
+        //check above if non-functional
+                // Retrieve the absolute position as a StatusSignal<Angle>
+        StatusSignal<Angle> absolutePositionSignal = absoluteEncoder.getAbsolutePosition();
+
+                // Get the Angle object from the StatusSignal
+        Angle angle = absolutePositionSignal.getValue();
+            
+                // Retrieve the raw value (assuming it's stored in revolutions or a similar unit)
+        double angleRevolutions = angle.magnitude(); // Use the non-deprecated method to access the raw value
+            
+                // Convert revolutions to radians
+        return angleRevolutions;
     }
 
     //kinda confused at the functionality of this method bc idk the parent class but im thinking
@@ -112,8 +126,19 @@ public class SwerveModule {
 
 
     public double getAbsoluteEncoderRad() {
-        return absoluteEncoder.getAbsolutePosition().getValue()*2*Math.PI;
-    }
+        // Retrieve the absolute position as a StatusSignal<Angle>
+        StatusSignal<Angle> absolutePositionSignal = absoluteEncoder.getAbsolutePosition();
+
+        // Get the Angle object from the StatusSignal
+        Angle angle = absolutePositionSignal.getValue();
+    
+        // Retrieve the raw value (assuming it's stored in revolutions or a similar unit)
+        double angleRevolutions = angle.magnitude(); // Use the non-deprecated method to access the raw value
+    
+        // Convert revolutions to radians
+        return angleRevolutions;
+}
+    
 
     public void resetEncoders() {
         absoluteEncoder.setPosition(0);
@@ -139,7 +164,7 @@ public class SwerveModule {
              stop();
              return;
         }
-        state = state.optimize(getState().angle);
+        state.optimize(getState().angle);
         driveMotor.set(state.speedMetersPerSecond / Constants.kPhysicalMaxSpeedMetersPerSecond);
         turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
         // SmartDashboard.putString("Swerve[" + absoluteEncoder.getChannel() + "]
