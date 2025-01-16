@@ -107,10 +107,10 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kRedDriveAbsoluteEncoderOffset,
                 Constants.kRedDriveAbsoluteEncoderReversed);
 
-        modules[0] = blue;
-        modules[1] = orange;
-        modules[2] = green;
-        modules[3] = red;
+        modules[0] = orange;
+        modules[1] = blue;
+        modules[2] = red;
+        modules[3] = green;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
 
