@@ -69,13 +69,6 @@ public class SwerveDrive extends SubsystemBase {
         // // Apply the configuration to the motor controller
         // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
-
-
-// Set the motor inversion state (true = inverted, false = normal)
-        
-
-        // motorConfig.setInverted(true); 
-        // blue.getSteeringMotor().setConfiguration(motorConfig);
         
 
         orange = new SwerveModule(
@@ -95,8 +88,6 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kGreenDriveAbsoluteEncoderPort,
                 Constants.kGreenDriveAbsoluteEncoderOffset,
                 Constants.kGreenDriveAbsoluteEncoderReversed);
-        //just invert the motors when you get oscillations when youre done
-        //green.getSteeringMotor().setInverted(true);
 
         red = new SwerveModule(
                 Constants.redDrive,
@@ -107,10 +98,10 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kRedDriveAbsoluteEncoderOffset,
                 Constants.kRedDriveAbsoluteEncoderReversed);
 
-        modules[0] = orange;
-        modules[1] = blue;
-        modules[2] = red;
-        modules[3] = green;
+        modules[0] = blue;
+        modules[1] = green;
+        modules[2] = orange;
+        modules[3] = red;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
 
@@ -295,10 +286,10 @@ public class SwerveDrive extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
-        blue.setDesiredState(desiredStates[0]);
-        green.setDesiredState(desiredStates[1]);
-        orange.setDesiredState(desiredStates[2]);
-        red.setDesiredState(desiredStates[3]);
+        green.setDesiredState(desiredStates[0]);
+        blue.setDesiredState(desiredStates[1]);
+        red.setDesiredState(desiredStates[2]);
+        orange.setDesiredState(desiredStates[3]);
     }
 
     // public void doChassisIdfk(){
@@ -350,10 +341,10 @@ public class SwerveDrive extends SubsystemBase {
         driveStates[2] = desiredState;
         driveStates[3] = desiredState;
 
-        blue.setDesiredState(desiredState);
         green.setDesiredState(desiredState);
-        orange.setDesiredState(desiredState);
+        blue.setDesiredState(desiredState);
         red.setDesiredState(desiredState);
+        orange.setDesiredState(desiredState);
     }
 
     public void execute(double leftX, double leftY, double rightX) {

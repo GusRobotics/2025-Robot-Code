@@ -25,9 +25,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static final double kTrackWidth = Units.inchesToMeters(29.75);
+  public static final double kTrackWidth = Units.inchesToMeters(24.75);
   // Distance between right and left wheels
-  public static final double kWheelBase = Units.inchesToMeters(29.75);
+  public static final double kWheelBase = Units.inchesToMeters(24.75);
   // Distance between front and back wheels
   public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
 
