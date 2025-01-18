@@ -163,10 +163,10 @@ public class SwerveDrive extends SubsystemBase {
 
 
     public SwerveModulePosition[] positioning(SwerveModulePosition[] positions) {
-        positions[0] = new SwerveModulePosition(0, new Rotation2d(Constants.kBlueDriveAbsoluteEncoderOffset));
-        positions[1] = new SwerveModulePosition(0, new Rotation2d(Constants.kGreenDriveAbsoluteEncoderOffset));
-        positions[2] = new SwerveModulePosition(0, new Rotation2d(Constants.kOrangeDriveAbsoluteEncoderOffset));
-        positions[3] = new SwerveModulePosition(0, new Rotation2d(Constants.kRedDriveAbsoluteEncoderOffset));
+        positions[0] = new SwerveModulePosition(0, new Rotation2d(Constants.kGreenDriveAbsoluteEncoderOffset));
+        positions[1] = new SwerveModulePosition(0, new Rotation2d(Constants.kBlueDriveAbsoluteEncoderOffset));
+        positions[2] = new SwerveModulePosition(0, new Rotation2d(Constants.kRedDriveAbsoluteEncoderOffset));
+        positions[3] = new SwerveModulePosition(0, new Rotation2d(Constants.kOrangeDriveAbsoluteEncoderOffset));
         return positions;
     }
 
@@ -193,10 +193,10 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     private SwerveModulePosition[] getPosition(){
-        drivePositions[0] = blue.getPosition();
-        drivePositions[1] = green.getPosition();
-        drivePositions[2] = orange.getPosition();
-        drivePositions[3] = red.getPosition();
+        drivePositions[0] = green.getPosition();
+        drivePositions[1] = blue.getPosition();
+        drivePositions[2] = red.getPosition();
+        drivePositions[3] = orange.getPosition();
         return drivePositions;
     }
 
@@ -205,7 +205,8 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Rotation2d getRotation2d() {
-        return Rotation2d.fromDegrees(getHeading());
+        double numDegrees = -pigeon.getYaw().getValue().magnitude();
+        return Rotation2d.fromDegrees(numDegrees);
     }
 
     public double getBlueTurnSetPoint(){
@@ -279,8 +280,8 @@ public class SwerveDrive extends SubsystemBase {
 
     public void stopModules() {
         blue.stop();
-        orange.stop();
         green.stop();
+        orange.stop();
         red.stop();
     }
 
@@ -369,7 +370,7 @@ public class SwerveDrive extends SubsystemBase {
 
         // ensures field orientation
         chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                (xSpeed * -1), ySpeed, turningSpeed, getRotation2D());
+                xSpeed, ySpeed, turningSpeed, getRotation2D());
 
         // 5. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
