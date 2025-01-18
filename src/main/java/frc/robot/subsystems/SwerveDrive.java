@@ -6,6 +6,10 @@ import java.util.Arrays;
 //got rid of that pigeon import bc  for some reason it wasn't getting the values of old class
 //import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -104,6 +108,38 @@ public class SwerveDrive extends SubsystemBase {
         modules[3] = red;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
+        RobotConfig config = null;
+        try{
+          config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+          // Handle exception as needed
+          e.printStackTrace();
+        }
+    
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+                this::getPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                ),
+                config, // The robot configuration
+                () -> {
+                  // Boolean supplier that controls when the path will be mirrored for the red alliance
+                  // This will flip the path being followed to the red side of the field.
+                  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    
+                  var alliance = DriverStation.getAlliance();
+                  if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                  }
+                  return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
 
         // private final SwerveModule[] allModules = new SwerveModule[]{
         //     blue,
@@ -199,6 +235,21 @@ public class SwerveDrive extends SubsystemBase {
         drivePositions[3] = orange.getPosition();
         return drivePositions;
     }
+
+    public void resetPose(Pose2d pose){
+        odometer.resetPosition(getRotation2d(), getPosition(), pose);
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return Constants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
+        setModuleStates(moduleStates);
+    }
+
 
     public double getHeading() {
         return Math.IEEEremainder(pigeon.getYaw().getValue().magnitude(), 360);

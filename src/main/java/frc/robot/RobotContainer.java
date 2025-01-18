@@ -10,6 +10,11 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
@@ -33,10 +38,23 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private final SendableChooser<Command> autoChooser;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    boolean isCompetition = true;
+
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> isCompetition
+        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+        : stream
+    );
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -67,7 +85,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    //return new PathPlannerAuto("Example Auto");
+    return autoChooser.getSelected();
   }
+
 }
