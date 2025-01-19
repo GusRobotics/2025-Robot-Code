@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import java.io.IOException;
 import java.util.Arrays;
 // import java.util.function.Consumer;
 // import java.util.function.Supplier;
@@ -16,6 +17,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.ctre.phoenixpro.signals.StatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.pathplanner.lib.config.RobotConfig;
 //import com.kauailabs.navx.frc.AHRS;
 // import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -108,14 +110,14 @@ public class SwerveDrive extends SubsystemBase {
         modules[3] = red;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
-        RobotConfig config = null;
+        RobotConfig config = RobotConfig.fromGUISettings(); //work
         try{
           config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
           // Handle exception as needed
           e.printStackTrace();
         }
-    
+
         // Configure AutoBuilder last
         AutoBuilder.configure(
                 this::getPose, // Robot pose supplier
