@@ -8,6 +8,7 @@ import java.util.Arrays;
 //import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -27,11 +28,14 @@ import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -110,16 +114,32 @@ public class SwerveDrive extends SubsystemBase {
         modules[3] = red;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
-
-
-        //CHECK THIS SOLUTION. NOT EXACT CODE FROM EXAMPLE
-        RobotConfig config = null;
-        try {
-            config = RobotConfig.fromGUISettings();
+        ModuleConfig moduleConfig = new ModuleConfig(
+            0.0508,                     // wheelRadiusMeters (0.0508m = 2 inch wheels)
+            Constants.kPhysicalMaxSpeedMetersPerSecond,  // maxDriveVelocityMPS
+            1.0,                        // wheelCOF (coefficient of friction, typically 0.5-1.0)
+            DCMotor.getNEO(1),         // driveMotor (using a single NEO motor)
+            8.14,                       // driveGearing (8.14:1 ratio, adjust for your gearbox)
+            50.0,                       // driveCurrentLimit (amps)
+            1                          // numMotors (1 drive motor per module)
+        );
+        RobotConfig config = new RobotConfig(
+            54.0,  // Robot mass in kilograms
+            10.0,  // Moment of inertia (kg * m^2)
+            moduleConfig,
+            // Module offsets from robot center
+            new Translation2d(Constants.kTrackWidth / 2.0, Constants.kWheelBase / 2.0),    // Front Left
+            new Translation2d(Constants.kTrackWidth / 2.0, -Constants.kWheelBase / 2.0),   // Front Right
+            new Translation2d(-Constants.kTrackWidth / 2.0, Constants.kWheelBase / 2.0),   // Back Left
+            new Translation2d(-Constants.kTrackWidth / 2.0, -Constants.kWheelBase / 2.0)   // Back Right
+        );
+        try{
+          config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
-            // Handle exception as needed
-            e.printStackTrace();
+          // Handle exception as needed
+          e.printStackTrace();
         }
+
 
         // Configure AutoBuilder last
         AutoBuilder.configure(

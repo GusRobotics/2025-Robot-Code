@@ -13,6 +13,8 @@ import frc.robot.subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,29 +41,6 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-  
-      //PATH PLANNER
-
-     
-  private final SendableChooser<Command> autoChooser;
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-
-    boolean isCompetition = true;
-
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
-      (stream) -> isCompetition
-        ? stream.filter(auto -> auto.getName().startsWith("comp"))
-        : stream
-    );
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -83,13 +64,33 @@ public class RobotContainer {
        baseController::getLeftY, baseController::getRightY, RobotContainer.baseController.triangle()::getAsBoolean));
   }
 
+
+  //PATH PLANNER
+
+     
+  private final SendableChooser<Command> autoChooser;
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+    // Configure the trigger bindings
+    configureBindings();
+    
+
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+
+    autoChooser.addOption("New Auto", new PathPlannerAuto("New Auto"));
+    
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return new PathPlannerAuto("Example Auto");
     return autoChooser.getSelected();
   }
 

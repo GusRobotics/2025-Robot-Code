@@ -51,10 +51,11 @@ public final class Constants {
 
         public static final int kPigeonPort = 1;
 
-    public static final double kBlueDriveAbsoluteEncoderOffset = -0.17822265625;
+    public static final double kBlueDriveAbsoluteEncoderOffset = -0.17722265625;
     public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;
-    public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37646484375;
+    public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37546484375;
     public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
+
 
     public static final int driveMotorCurrentLimit = 45;
 
