@@ -110,12 +110,15 @@ public class SwerveDrive extends SubsystemBase {
         modules[3] = red;
         odometer = new SwerveDriveOdometry(Constants.kDriveKinematics, new Rotation2d(0), getPosition());
 
-        RobotConfig config = RobotConfig.fromGUISettings(); //work
-        try{
-          config = RobotConfig.fromGUISettings();
+
+
+        //CHECK THIS SOLUTION. NOT EXACT CODE FROM EXAMPLE
+        RobotConfig config = null;
+        try {
+            config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
-          // Handle exception as needed
-          e.printStackTrace();
+            // Handle exception as needed
+            e.printStackTrace();
         }
 
         // Configure AutoBuilder last
