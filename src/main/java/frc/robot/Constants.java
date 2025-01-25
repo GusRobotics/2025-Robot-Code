@@ -51,13 +51,23 @@ public final class Constants {
 
         public static final int kPigeonPort = 1;
   //Elevator ID Constants
-  public static final int leftElevator = 20;
-  public static final int rightElevator = 21;
+  public static final int leftElevator = 90; //change
+  public static final int rightElevator = 91;//change
 
   //Shooter ID Constants
-  public static final int leftShooter = 22;
-  public static final int rightShooter = 23;
+  public static final int leftShooter = 22; //change
+  public static final int rightShooter = 23;//change
 
+  //Climber ID Constants
+  public static final int leftClimber = 20; //Change 
+  public static final int rightClimber = 21;//Change
+
+  //Light PWM constant
+  public static final int ledChannel = 1;
+
+  public static final double pinkLights = 0.57;
+  public static final double blueLights = 0.83;
+  public static final double yellowLights = 0.69;
 
     public static final double kBlueDriveAbsoluteEncoderOffset = -0.17722265625;
     public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;

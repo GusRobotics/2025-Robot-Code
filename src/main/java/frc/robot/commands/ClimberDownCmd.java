@@ -5,19 +5,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 
-public class CoralShotCmd extends Command {
-    private Shooter shooter;
+public class ClimberDownCmd extends Command {
+    private Climber climber;
     private boolean direction;
     private boolean secondDirection;
     private Timer ourTimer;
 
-    public CoralShotCmd(Shooter shooter, boolean direction, boolean secondDirection) {
-        this.shooter = shooter;
+    public ClimberDownCmd(Climber climber, boolean direction, boolean secondDirection) {
+        this.climber = climber;
         this.direction = direction;
         this.ourTimer = new Timer();
-        addRequirements(shooter);
+        addRequirements(climber);
     }
 
     // Start
@@ -25,14 +25,14 @@ public class CoralShotCmd extends Command {
     public void initialize() {
         if (direction) 
         {
-            shooter.enableShooter();
+            climber.enableClimber();
         }
         else if(secondDirection){
-            shooter.stopShooter();
+            climber.stopClimber();
         }
         else 
         {
-            shooter.enableAutoShooter();
+            climber.enableAutoClimber();
         }
         ourTimer.restart();
     }
@@ -41,7 +41,7 @@ public class CoralShotCmd extends Command {
     public void end(boolean terminated) {
         if (!DriverStation.isAutonomous())
         {
-            shooter.end();
+            climber.end();
         }
     }
 

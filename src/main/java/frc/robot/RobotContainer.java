@@ -31,6 +31,10 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.commands.CoralShotCmd;
 import frc.robot.subsystems.Shooter;
 
+import frc.robot.commands.ClimberDownCmd;
+import frc.robot.commands.ClimberUpCmd;
+import frc.robot.subsystems.Climber;
+
 
 
 /**
@@ -44,6 +48,7 @@ public class RobotContainer {
   public static Shooter shooter = new Shooter();
   public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
+  public static Climber climber = new Climber();
   
   
   
@@ -59,11 +64,13 @@ public class RobotContainer {
   private Trigger ElevatorOUp = baseController.povUp();
   private Trigger ElevatorODown = baseController.povDown();
   
-  //private Trigger ElevatorODown = baseController.povDown();
-
+  //coral shooter
   private static final double TRIGGER_THRESHOLD = 0.1;
-  private Trigger CoralShot = new Trigger(() -> baseController.getR2Axis() > TRIGGER_THRESHOLD);
+  private Trigger CoralShot = new Trigger(() -> baseController.getRightX() > TRIGGER_THRESHOLD);
 
+  //Climber down and up
+  private Trigger ClimberDown = baseController.R2();
+  private Trigger ClimberUp = baseController.L2();
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -83,6 +90,7 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+
     //forward override elevator
     ElevatorOUp.whileTrue(new ElevatorOUpCmd(elevator, true, false));
 
@@ -92,6 +100,11 @@ public class RobotContainer {
     //coral shooter
     CoralShot.whileTrue(new CoralShotCmd(shooter, true, false));
 
+    //climber down
+    ClimberDown.whileTrue(new ClimberDownCmd(climber, true, false));
+
+    //climber up
+    ClimberUp.whileTrue(new ClimberUpCmd(climber, true, false));
 
     SmartDashboard.putData(new SwerveJoystickCmd(drive, baseController::getLeftX,
        baseController::getLeftY, baseController::getRightY, RobotContainer.baseController.triangle()::getAsBoolean));
@@ -110,6 +123,9 @@ public class RobotContainer {
     
     NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
     NamedCommands.registerCommand("Elevator Override Down", new ElevatorODownCmd(elevator, true, false));
+    NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter, true, false));
+    NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
+    NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
