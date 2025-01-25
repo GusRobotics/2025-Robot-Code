@@ -12,6 +12,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 import com.pathplanner.lib.path.PathConstraints;
@@ -23,6 +24,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import frc.robot.commands.ElevatorOUpCmd;
+import frc.robot.commands.ElevatorODownCmd;
+import frc.robot.subsystems.Elevator;
+
+import frc.robot.commands.CoralShotCmd;
+import frc.robot.subsystems.Shooter;
+
 
 
 /**
@@ -33,7 +41,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
+  public static Shooter shooter = new Shooter();
+  public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
+  
+  
+  
   public static CommandPS4Controller baseController = new CommandPS4Controller(0);
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -41,6 +54,16 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  //forward and reverse override for elevator
+  private Trigger ElevatorOUp = baseController.povUp();
+  private Trigger ElevatorODown = baseController.povDown();
+  
+  //private Trigger ElevatorODown = baseController.povDown();
+
+  private static final double TRIGGER_THRESHOLD = 0.1;
+  private Trigger CoralShot = new Trigger(() -> baseController.getR2Axis() > TRIGGER_THRESHOLD);
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -60,6 +83,16 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+    //forward override elevator
+    ElevatorOUp.whileTrue(new ElevatorOUpCmd(elevator, true, false));
+
+    //reverse override elevator
+    ElevatorODown.whileTrue(new ElevatorODownCmd(elevator, true, false));
+
+    //coral shooter
+    CoralShot.whileTrue(new CoralShotCmd(shooter, true, false));
+
+
     SmartDashboard.putData(new SwerveJoystickCmd(drive, baseController::getLeftX,
        baseController::getLeftY, baseController::getRightY, RobotContainer.baseController.triangle()::getAsBoolean));
   }
@@ -75,6 +108,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
+    NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
+    NamedCommands.registerCommand("Elevator Override Down", new ElevatorODownCmd(elevator, true, false));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();

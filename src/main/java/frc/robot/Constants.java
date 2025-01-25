@@ -50,14 +50,19 @@ public final class Constants {
         public static final int kRedDriveAbsoluteEncoderPort = 3;
 
         public static final int kPigeonPort = 1;
+  //Elevator ID Constants
+  public static final int leftElevator = 20;
+  public static final int rightElevator = 21;
+
+  //Shooter ID Constants
+  public static final int leftShooter = 22;
+  public static final int rightShooter = 23;
+
 
     public static final double kBlueDriveAbsoluteEncoderOffset = -0.17722265625;
     public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;
     public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37546484375;
     public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
-
-
-    public static final int driveMotorCurrentLimit = 45;
 
     public static final boolean kBlueTurningEncoderReversed = false;
     public static final boolean kGreenTurningEncoderReversed = false;

@@ -52,9 +52,9 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule red;
     private final SwerveModule green;
     private final SwerveModule orange;
-    private SlewRateLimiter xLimiter = new SlewRateLimiter(0.5);
-    private SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
-    private SlewRateLimiter turningLimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter xLimiter = new SlewRateLimiter(1);
+    private SlewRateLimiter yLimiter = new SlewRateLimiter(1);
+    private SlewRateLimiter turningLimiter = new SlewRateLimiter(1);
     private final Pigeon2 pigeon = new Pigeon2(Constants.kPigeonPort);
     private final SwerveDriveOdometry odometer;
     private final SwerveModule[] modules = new SwerveModule[4];
