@@ -2,9 +2,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
+
 
 
 public class Climber implements Subsystem {
@@ -27,6 +30,7 @@ public class Climber implements Subsystem {
     public void enableClimber() {
         leftClimberMotor.set(0.1);
         rightClimberMotor.set(0.1);
+        Shooter.setLightstrip(Constants.blueLights);
     }
 
     public void stopClimber() {

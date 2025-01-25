@@ -37,6 +37,8 @@ import frc.robot.subsystems.Climber;
 
 
 
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -126,6 +128,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter, true, false));
     NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
     NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
+    
+    //set pink lights
+    shooter.setDefaultLights();
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();

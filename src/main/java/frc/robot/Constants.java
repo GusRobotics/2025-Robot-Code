@@ -55,12 +55,12 @@ public final class Constants {
   public static final int rightElevator = 91;//change
 
   //Shooter ID Constants
-  public static final int leftShooter = 22; //change
-  public static final int rightShooter = 23;//change
+  public static final int leftShooter = 20; //change
+  public static final int rightShooter = 21;//change
 
   //Climber ID Constants
-  public static final int leftClimber = 20; //Change 
-  public static final int rightClimber = 21;//Change
+  public static final int leftClimber = 92; //Change 
+  public static final int rightClimber = 93;//Change
 
   //Light PWM constant
   public static final int ledChannel = 1;
