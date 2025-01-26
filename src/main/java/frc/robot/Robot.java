@@ -4,8 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveJoystickCmd;
@@ -35,6 +42,12 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.drive, new SwerveJoystickCmd(RobotContainer.drive,
     RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
     RobotContainer.baseController.triangle()::getAsBoolean));
+    
+    UsbCamera camera = CameraServer.startAutomaticCapture("camera", 0);
+    Shuffleboard.getTab("Camera")
+    .add("Live Feed", camera)
+    .withWidget(BuiltInWidgets.kCameraStream)
+    .withSize(3, 4);
 
   }
 
@@ -89,7 +102,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {SmartDashboard.putNumber("test", 4);}
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {

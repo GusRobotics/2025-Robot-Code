@@ -68,6 +68,7 @@ public final class Constants {
   public static final double pinkLights = 0.57;
   public static final double blueLights = 0.83;
   public static final double yellowLights = 0.69;
+  public static final double greenLights = 0.77;
 
     public static final double kBlueDriveAbsoluteEncoderOffset = -0.17722265625;
     public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;

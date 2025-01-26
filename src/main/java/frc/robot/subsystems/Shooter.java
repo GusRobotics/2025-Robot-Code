@@ -17,7 +17,7 @@ public class Shooter implements Subsystem {
     private SparkMax rightShooterMotor; 
     private static Spark lightstrip = new Spark(1);
 
-    private AnalogInput distSensor = new AnalogInput(6);
+    private AnalogInput distSensor = new AnalogInput(0);
 
     // Init
     public Shooter() {
@@ -31,23 +31,25 @@ public class Shooter implements Subsystem {
         ));
     }
 
-    public boolean coralDetected(){
-        return distSensor.getValue() > 700;
-    }
-
-    public void enableShooter() {
+    public void enableIndex() {
         SmartDashboard.putNumber("Distance Sensor", distSensor.getValue());
         
-        if(coralDetected()){
+        if(distSensor.getValue() > 700){
             leftShooterMotor.set(0);
             rightShooterMotor.set(0);
             lightstrip.set(Constants.blueLights);
         }
         else {
-            leftShooterMotor.set(0.1);
-            rightShooterMotor.set(-0.1);
-            lightstrip.set(Constants.yellowLights);
+            leftShooterMotor.set(0.05);
+            rightShooterMotor.set(-0.05);
+            lightstrip.set(Constants.pinkLights);
         }
+    }
+
+    public void enableShooter() {
+        leftShooterMotor.set(0.1);
+        rightShooterMotor.set(-0.1);
+        lightstrip.set(Constants.greenLights);
     }
 
     public void stopShooter() {
@@ -74,11 +76,11 @@ public class Shooter implements Subsystem {
     public void end() {
         leftShooterMotor.set(0);
         rightShooterMotor.set(0);
-        lightstrip.set(Constants.pinkLights);
+        lightstrip.set(Constants.yellowLights);
     }
 
     public void setDefaultLights(){
-        lightstrip.set(Constants.pinkLights);
+        lightstrip.set(Constants.yellowLights);
     }
 
     public static void setLightstrip(double value) {

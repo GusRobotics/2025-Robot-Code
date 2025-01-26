@@ -80,18 +80,6 @@ public class SwerveJoystickCmd extends Command {
 
         // 6. Output each module states to wheels
         swerveSubsystem.setModuleStates(moduleStates);
-
-        SmartDashboard.putNumber("wanted value", swerveSubsystem.getBlueTurnSetPoint());
-
-        SmartDashboard.putNumber("blue desired state", swerveSubsystem.getBluePosition());
-        SmartDashboard.putNumber("red desired state", swerveSubsystem.getRedPosition());
-        SmartDashboard.putNumber("green desired state", swerveSubsystem.getGreenPosition());
-        SmartDashboard.putNumber("orange desired state", swerveSubsystem.getOrangePosition());
-        
-        SmartDashboard.putNumber("blue actual state", swerveSubsystem.getBluePosition());
-        SmartDashboard.putNumber("red actual state", swerveSubsystem.getRedPosition());
-        SmartDashboard.putNumber("green actual state", swerveSubsystem.getGreenPosition());
-        SmartDashboard.putNumber("orange actual state", swerveSubsystem.getOrangePosition());
     }
 
     @Override
