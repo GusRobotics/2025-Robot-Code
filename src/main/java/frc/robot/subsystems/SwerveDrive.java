@@ -79,7 +79,6 @@ public class SwerveDrive extends SubsystemBase {
         // // Apply the configuration to the motor controller
         // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
         SparkMaxConfig motorConfig = new SparkMaxConfig();
-        
 
         orange = new SwerveModule(
                 Constants.orangeDrive,
@@ -119,8 +118,8 @@ public class SwerveDrive extends SubsystemBase {
             Constants.kPhysicalMaxSpeedMetersPerSecond,  // maxDriveVelocityMPS
             1.0,                        // wheelCOF (coefficient of friction, typically 0.5-1.0)
             DCMotor.getNEO(1),         // driveMotor (using a single NEO motor)
-            8.14,                       // driveGearing (8.14:1 ratio, adjust for your gearbox)
-            50.0,                       // driveCurrentLimit (amps)
+            5.143,                       // driveGearing (8.14:1 ratio, adjust for your gearbox)
+            45.0,                       // driveCurrentLimit (amps)
             1                          // numMotors (1 drive motor per module)
         );
         RobotConfig config = new RobotConfig(
@@ -148,8 +147,8 @@ public class SwerveDrive extends SubsystemBase {
                 this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                        new PIDConstants(0, 0.0, 0), // Translation PID constants (5,0,0)
+                        new PIDConstants(0, 0.0, 0) // Rotation PID constants (5,0,0)
                 ),
                 config, // The robot configuration
                 () -> {

@@ -9,6 +9,8 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -43,12 +45,14 @@ public class Robot extends TimedRobot {
     RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
     RobotContainer.baseController.triangle()::getAsBoolean));
     
-    UsbCamera camera = CameraServer.startAutomaticCapture("camera", 0);
-    Shuffleboard.getTab("Camera")
-    .add("Live Feed", camera)
-    .withWidget(BuiltInWidgets.kCameraStream)
-    .withSize(3, 4);
 
+    // UsbCamera camera = CameraServer.startAutomaticCapture();
+
+    // // Add the camera video feed to Shuffleboard using the video stream
+    // Shuffleboard.getTab("SmartDashboard")
+    // .add("Live Feed", CameraServer.getVideo())  // Add the video stream (not CvSink)
+    // .withWidget(BuiltInWidgets.kCameraStream)   // Use a CameraStream widget for live video
+    // .withSize(3, 4);  // Set the widget size (optional, adjust to your preference)
   }
 
   /**
