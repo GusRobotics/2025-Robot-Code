@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveJoystickCmd;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
@@ -26,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.ElevatorOUpCmd;
+import frc.robot.commands.ElevatorPositionCmd;
 import frc.robot.commands.ElevatorODownCmd;
 import frc.robot.subsystems.Elevator;
 
@@ -77,6 +77,10 @@ public class RobotContainer {
   private Trigger ClimberDown = baseController.R2();
   private Trigger ClimberUp = baseController.L2();
 
+  //presets
+  private Trigger ElevatorBottom = baseController.square();
+  private Trigger ElevatorL2 = baseController.cross();
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -113,6 +117,12 @@ public class RobotContainer {
     //climber up
     ClimberUp.whileTrue(new ClimberUpCmd(climber, true, false));
 
+    //elevator bottom
+    //ElevatorBottom.whileTrue(new ElevatorDownPosCmd(elevator, Elevator.ElevatorPosition.GROUND));
+
+    //elevator L2
+    ElevatorL2.whileTrue(new ElevatorPositionCmd(elevator, Constants.L2Pos));
+
   }
 
 
@@ -132,6 +142,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
     NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
     NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter, true));
+    //NamedCommands.registerCommand("Elevator Bottom", new ElevatorDownPosCmd(elevator, Elevator.ElevatorPosition.GROUND));
+    //NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, ));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

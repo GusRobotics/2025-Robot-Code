@@ -51,8 +51,8 @@ public final class Constants {
 
         public static final int kPigeonPort = 1;
   //Elevator ID Constants
-  public static final int leftElevator = 90; //change
-  public static final int rightElevator = 91;//change
+  public static final int leftElevator = 30; //change
+  public static final int rightElevator = 31;//change
 
   //Shooter ID Constants
   public static final int leftShooter = 20; //change
@@ -123,7 +123,7 @@ public final class Constants {
 
     public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 2.5;
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
-                    kPhysicalMaxAngularSpeedRadiansPerSecond / 3;
+                    kPhysicalMaxAngularSpeedRadiansPerSecond / 2;
     public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 5.64558;
 
@@ -132,6 +132,10 @@ public final class Constants {
     TrapezoidProfile.State previousProfiledReference = new TrapezoidProfile.State();
 
     public static final double OIConstants = 0.05;
+
+    //Elevator Constants
+    public static final double GroundPos = 0;
+    public static final double L2Pos = 20;
 
     // public static final boolean driveMotorReversed = false;
     // public static final boolean turningMotorReversed = false;
