@@ -70,8 +70,8 @@ public final class Constants {
   public static final double yellowLights = 0.69;
   public static final double greenLights = 0.77;
 
-    public static final double kBlueDriveAbsoluteEncoderOffset = -0.17722265625;
-    public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625;
+    public static final double kBlueDriveAbsoluteEncoderOffset = -0.16722265625;
+    public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625; 
     public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37546484375;
     public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
 
@@ -113,7 +113,7 @@ public final class Constants {
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     
     //FOR TUNING - PID VALUES
-    public static final double kPTurning = .1; //original value was .3
+    public static final double kPTurning = .35; //original value was .3
     public static final double kPXController = 1.5;
     public static final double kPYController = 1.5;
     public static final double kPThetaController = 3;

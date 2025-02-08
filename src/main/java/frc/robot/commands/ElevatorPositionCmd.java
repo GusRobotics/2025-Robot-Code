@@ -20,6 +20,7 @@ public class ElevatorPositionCmd extends Command {
     @Override
     public void initialize() {
         elevator.setPosition(targetPosition);
+        System.out.println("ElevatorPositionCmd started! Target: " + targetPosition);
     }
 
     @Override

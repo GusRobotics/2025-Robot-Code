@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -117,7 +118,9 @@ public class Elevator implements Subsystem {
                 output = Math.copySign(MIN_SPEED, output);
             }
         }
-        
+        SmartDashboard.putNumber("Elevator Output", output);
+        SmartDashboard.putNumber("Elevator Position", currentPosition);
+        SmartDashboard.putString("Elevator Status", "Periodic Running");
         setMotors(output);
     }
 
@@ -130,10 +133,7 @@ public class Elevator implements Subsystem {
 
     /** Ends the elevator function */
     public void end() {
-        leftElevatorMotor.set(0);
-        rightElevatorMotor.set(0);
-        leftElevatorMotor.setVoltage(0.2);
-        rightElevatorMotor.setVoltage(0.2);
+        setMotors(0);
 
     }
 

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "B 1st Score"
+            "pathName": "L 1st Score"
           }
         },
         {
@@ -32,13 +32,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "B 1st Intake"
+            "pathName": "L 1st Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B 2nd+3rd Score"
+            "pathName": "L 2nd+3rd Score"
           }
         },
         {
@@ -63,13 +63,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "B 2nd Intake"
+            "pathName": "L 2nd Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B 2nd+3rd Score"
+            "pathName": "L 2nd+3rd Score"
           }
         },
         {
