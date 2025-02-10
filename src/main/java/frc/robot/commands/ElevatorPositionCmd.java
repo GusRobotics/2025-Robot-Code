@@ -3,7 +3,7 @@ package frc.robot.commands;
 //import java.sql.Driver;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 
@@ -20,7 +20,6 @@ public class ElevatorPositionCmd extends Command {
     @Override
     public void initialize() {
         elevator.setPosition(targetPosition);
-        System.out.println("ElevatorPositionCmd started! Target: " + targetPosition);
     }
 
     @Override

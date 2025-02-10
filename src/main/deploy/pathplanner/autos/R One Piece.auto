@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "One Piece Straight"
+            "pathName": "R 1st Score"
           }
         },
         {
@@ -20,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Right Autos",
   "choreoAuto": false
 }

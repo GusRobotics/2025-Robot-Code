@@ -1,5 +1,5 @@
 package frc.robot.subsystems;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.Arrays;
 // import java.util.function.Consumer;
 // import java.util.function.Supplier;
@@ -12,13 +12,13 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.spark.config.SparkMaxConfig;
+//import com.revrobotics.spark.config.SparkBaseConfig;
+//import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+//import com.ctre.phoenix6.hardware.CANcoder;
+//import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.ctre.phoenixpro.signals.StatusSignal;
-import com.ctre.phoenix6.StatusSignal;
-import com.pathplanner.lib.config.RobotConfig;
+//import com.ctre.phoenix6.StatusSignal;
+//import com.pathplanner.lib.config.RobotConfig;
 //import com.kauailabs.navx.frc.AHRS;
 // import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -35,8 +35,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
-import edu.wpi.first.units.measure.Angle;
+//import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
+//import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 //import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import edu.wpi.first.wpilibj.SPI;
@@ -74,11 +74,9 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kBlueDriveAbsoluteEncoderReversed);
 
         // SparkBaseConfig blueMotorConfig = new SparkBaseConfig();
-        // blueMotorConfig.inverted(true);  // Set to true for inverted, false for normal
-
         // // Apply the configuration to the motor controller
         // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
-        SparkMaxConfig motorConfig = new SparkMaxConfig();
+        //SparkMaxConfig motorConfig = new SparkMaxConfig();
 
         orange = new SwerveModule(
                 Constants.orangeDrive,

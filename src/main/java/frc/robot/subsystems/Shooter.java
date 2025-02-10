@@ -40,15 +40,15 @@ public class Shooter implements Subsystem {
             lightstrip.set(Constants.blueLights);
         }
         else {
-            leftShooterMotor.set(0.05);
-            rightShooterMotor.set(-0.05);
+            leftShooterMotor.set(0.18);
+            rightShooterMotor.set(-0.18);
             lightstrip.set(Constants.pinkLights);
         }
     }
 
     public void enableShooter() {
-        leftShooterMotor.set(0.1);
-        rightShooterMotor.set(-0.1);
+        leftShooterMotor.set(0.75);
+        rightShooterMotor.set(-0.75);
         lightstrip.set(Constants.greenLights);
     }
 
@@ -62,17 +62,7 @@ public class Shooter implements Subsystem {
         rightShooterMotor.set(0.1);
     }
 
-    public void enableAutoShooter(){
-        leftShooterMotor.set(0.1);
-        rightShooterMotor.set(-0.1);
-    }
-
-    // public void forewardShooterState(){
-    //     topShooterMotor.set(Constants.topIntakeSpeed);
-    //     bottomShooterMotor.set(Constants.bottomIntakeSpeed);
-    // }
-
-    /** Ends the elevator function */
+    /** Ends the shooter function */
     public void end() {
         leftShooterMotor.set(0);
         rightShooterMotor.set(0);
@@ -81,10 +71,6 @@ public class Shooter implements Subsystem {
 
     public void setDefaultLights(){
         lightstrip.set(Constants.yellowLights);
-    }
-
-    public static void setLightstrip(double value) {
-        lightstrip.set(value);
     }
 
     @Override

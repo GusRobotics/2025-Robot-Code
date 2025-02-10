@@ -9,13 +9,12 @@ import frc.robot.subsystems.Shooter;
 
 public class StopCoralIndexCmd extends Command {
     private Shooter shooter;
-    private boolean direction;
-    private boolean secondDirection;
+    //private boolean direction;
     private Timer ourTimer;
 
-    public StopCoralIndexCmd(Shooter shooter, boolean direction, boolean secondDirection) {
+    public StopCoralIndexCmd(Shooter shooter, boolean direction) {
         this.shooter = shooter;
-        this.direction = direction;
+        //this.direction = direction;
         this.ourTimer = new Timer();
         addRequirements(shooter);
     }

@@ -4,17 +4,17 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.SwerveJoystickCmd;
-import frc.robot.subsystems.ExampleSubsystem;
+//import frc.robot.Constants.OperatorConstants;
+//import frc.robot.commands.Autos;
+//import frc.robot.commands.SwerveJoystickCmd;
+//import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
-import com.pathplanner.lib.path.PathConstraints;
+//import com.pathplanner.lib.commands.PathPlannerAuto;
+//import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
+//import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -80,6 +80,8 @@ public class RobotContainer {
   //presets
   private Trigger ElevatorBottom = baseController.square();
   private Trigger ElevatorL2 = baseController.cross();
+  private Trigger ElevatorL3 = baseController.triangle();
+  private Trigger ElevatorL4 = baseController.circle();
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -109,7 +111,7 @@ public class RobotContainer {
     CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false, false));
 
     //coral shooting
-    CoralShot.whileTrue(new CoralShotCmd(shooter, true));
+    CoralShot.whileTrue(new CoralShotCmd(shooter));
 
     //climber down
     ClimberDown.whileTrue(new ClimberDownCmd(climber, true, false));
@@ -120,8 +122,11 @@ public class RobotContainer {
     //elevator bottom
     //ElevatorBottom.whileTrue(new ElevatorDownPosCmd(elevator, Elevator.ElevatorPosition.GROUND));
 
-    //elevator L2
+    //elevator presets
+    ElevatorBottom.whileTrue(new ElevatorPositionCmd(elevator, Constants.GroundPos));
     ElevatorL2.whileTrue(new ElevatorPositionCmd(elevator, Constants.L2Pos));
+    ElevatorL3.whileTrue(new ElevatorPositionCmd(elevator, Constants.L3Pos));
+    ElevatorL4.whileTrue(new ElevatorPositionCmd(elevator, Constants.L4Pos));
 
   }
 
@@ -141,9 +146,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("Coral Index", new CoralIndexCmd(shooter, true, false));
     NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
     NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
-    NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter, true));
-    //NamedCommands.registerCommand("Elevator Bottom", new ElevatorDownPosCmd(elevator, Elevator.ElevatorPosition.GROUND));
-    //NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, ));
+    NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter));
+    NamedCommands.registerCommand("Ground", new ElevatorPositionCmd(elevator, Constants.GroundPos));
+    NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2Pos));
+    NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
+    NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

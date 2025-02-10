@@ -7,17 +7,16 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 
 
-
 public class Elevator implements Subsystem {
     // Hardware
     private SparkMax leftElevatorMotor;    
-    private SparkMax rightElevatorMotor; 
+    private SparkMax rightElevatorMotor;
 
     // Encoders
     private RelativeEncoder leftEncoder;
@@ -39,7 +38,7 @@ public class Elevator implements Subsystem {
     private static final double VELOCITY_TOLERANCE = 0.1;
 
     // Speed limits
-    private static final double MAX_SPEED = 0.25;
+    private static final double MAX_SPEED = 0.35;
     private static final double MIN_SPEED = 0.05;
 
     public Elevator() {
@@ -56,6 +55,8 @@ public class Elevator implements Subsystem {
         pidController.setIntegratorRange(-0.5, 0.5);
 
         zeroEncoders();
+
+        CommandScheduler.getInstance().registerSubsystem(this);
     }
     /** Sets the elevator's default command (not moving) */
     public void initDefaultCommand() {
@@ -89,10 +90,6 @@ public class Elevator implements Subsystem {
         setMotors(-0.25);
     }
 
-    public void enableAutoElevator(){
-        setMotors(0.1);
-    }
-
     public double getMotorOutput() {
         return leftElevatorMotor.get();
     }
@@ -118,9 +115,7 @@ public class Elevator implements Subsystem {
                 output = Math.copySign(MIN_SPEED, output);
             }
         }
-        SmartDashboard.putNumber("Elevator Output", output);
         SmartDashboard.putNumber("Elevator Position", currentPosition);
-        SmartDashboard.putString("Elevator Status", "Periodic Running");
         setMotors(output);
     }
 
@@ -128,9 +123,6 @@ public class Elevator implements Subsystem {
         return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
     }
     
-
-    
-
     /** Ends the elevator function */
     public void end() {
         setMotors(0);

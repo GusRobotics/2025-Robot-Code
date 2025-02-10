@@ -30,10 +30,6 @@ public class ElevatorODownCmd extends Command {
         else if(secondDirection){
             elevator.stopElevator();
         }
-        else 
-        {
-            elevator.enableAutoElevator();
-        }
         ourTimer.restart();
     }
 
