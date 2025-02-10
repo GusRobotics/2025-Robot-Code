@@ -43,11 +43,6 @@ public class Climber implements Subsystem {
         rightClimberMotor.set(-0.1);
     }
 
-    public void enableAutoClimber(){
-        leftClimberMotor.set(0.1);
-        rightClimberMotor.set(0.1);
-    }
-
     /** Ends the elevator function */
     public void end() {
         leftClimberMotor.set(0);

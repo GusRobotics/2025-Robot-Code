@@ -108,7 +108,7 @@ public class RobotContainer {
       isCoralIndexEnabled = !isCoralIndexEnabled;
     }));
 
-    CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false, false));
+    CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false));
 
     //coral shooting
     CoralShot.whileTrue(new CoralShotCmd(shooter));

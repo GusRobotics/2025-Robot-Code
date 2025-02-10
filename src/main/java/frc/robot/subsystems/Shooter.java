@@ -69,6 +69,9 @@ public class Shooter implements Subsystem {
         lightstrip.set(Constants.yellowLights);
     }
 
+    public static void setLightstrip( double value){
+        lightstrip.set(value);
+    }
     public void setDefaultLights(){
         lightstrip.set(Constants.yellowLights);
     }

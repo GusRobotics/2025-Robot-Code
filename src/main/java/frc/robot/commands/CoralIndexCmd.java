@@ -30,10 +30,6 @@ public class CoralIndexCmd extends Command {
         else if(secondDirection){
             shooter.stopShooter();
         }
-        else 
-        {
-            shooter.enableAutoShooter();
-        }
         ourTimer.restart();
     }
 
