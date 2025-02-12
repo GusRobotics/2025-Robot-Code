@@ -30,10 +30,6 @@ public class ClimberDownCmd extends Command {
         else if(secondDirection){
             climber.stopClimber();
         }
-        else 
-        {
-            climber.enableAutoClimber();
-        }
         ourTimer.restart();
     }
 

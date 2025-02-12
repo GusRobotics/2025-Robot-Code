@@ -228,16 +228,16 @@ public class SwerveDrive extends SubsystemBase {
         return positions;
     }
 
-    private void driveRobot(ChassisSpeeds robotRelativeSpeeds) {
-        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    // private void driveRobot(ChassisSpeeds robotRelativeSpeeds) {
+    //     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
     
-        SwerveModuleState[] targetStates = Constants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
-        setModuleStates(targetStates);
-      }
+    //     SwerveModuleState[] targetStates = Constants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
+    //     setModuleStates(targetStates);
+    //   }
 
-    private ChassisSpeeds getSpeeds() {
-        return Constants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-      }
+    // private ChassisSpeeds getSpeeds() {
+    //     return Constants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+    //   }
 
     public void zeroHeading() {
         pigeon.reset();

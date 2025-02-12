@@ -48,18 +48,17 @@ import frc.robot.subsystems.Climber;
  */
 public class RobotContainer {
 
+  //subsystems
   public static Shooter shooter = new Shooter();
   public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
   public static Climber climber = new Climber();
   
-
+  //controllers
   public static CommandPS4Controller baseController = new CommandPS4Controller(0);
+  //public static CommandPS4Controller coController = new CommandPS4Controller(1);
 
-
-  // // Replace with CommandPS4Controller or CommandJoystick if needed
-  // private final CommandXboxController m_driverController =
-  //     new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  //TRIGGERS
 
   //forward and reverse override for elevator
   private Trigger ElevatorOUp = baseController.povUp();
@@ -94,6 +93,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    //COMMANDS
+
     //forward override elevator
     ElevatorOUp.whileTrue(new ElevatorOUpCmd(elevator, true, false));
 
@@ -119,21 +120,16 @@ public class RobotContainer {
     //climber up
     ClimberUp.whileTrue(new ClimberUpCmd(climber, true, false));
 
-    //elevator bottom
-    //ElevatorBottom.whileTrue(new ElevatorDownPosCmd(elevator, Elevator.ElevatorPosition.GROUND));
-
     //elevator presets
     ElevatorBottom.whileTrue(new ElevatorPositionCmd(elevator, Constants.GroundPos));
     ElevatorL2.whileTrue(new ElevatorPositionCmd(elevator, Constants.L2Pos));
     ElevatorL3.whileTrue(new ElevatorPositionCmd(elevator, Constants.L3Pos));
     ElevatorL4.whileTrue(new ElevatorPositionCmd(elevator, Constants.L4Pos));
-
   }
 
 
   //PATH PLANNER
 
-     
   private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -141,6 +137,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
+    //Named Commands for auto
     NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
     NamedCommands.registerCommand("Elevator Override Down", new ElevatorODownCmd(elevator, true, false));
     NamedCommands.registerCommand("Coral Index", new CoralIndexCmd(shooter, true, false));
@@ -155,15 +152,11 @@ public class RobotContainer {
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));
 
-    //set pink lights
+    //set pink lights default
     shooter.setDefaultLights();
 
-    // Build an auto chooser. This will use Commands.none() as the default option.
+    // Build an auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
-
-
-    // autoChooser.addOption("New Auto", new PathPlannerAuto("New Auto"));
-    
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
