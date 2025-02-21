@@ -38,7 +38,8 @@ public class Elevator implements Subsystem {
     private static final double VELOCITY_TOLERANCE = 0.1;
 
     // Speed limits
-    private static final double MAX_SPEED = 0.35;
+    private static final double MAX_UPWARD_SPEED = 0.35;
+    private static final double MAX_DOWNWARD_SPEED = 0.2;
     private static final double MIN_SPEED = 0.05;
 
     public Elevator() {
@@ -107,14 +108,21 @@ public class Elevator implements Subsystem {
     public void periodic() {
         double currentPosition = getCurrentPosition();
         double output = pidController.calculate(currentPosition, targetPosition);
-        
-        output = MathUtil.clamp(output, -MAX_SPEED, MAX_SPEED);
-        
+    
+        // Determine clamping limits based on direction
+        if (output > 0) { // Moving up
+            output = MathUtil.clamp(output, -MAX_DOWNWARD_SPEED, MAX_UPWARD_SPEED);
+        } else { // Moving down
+            output = MathUtil.clamp(output, -MAX_DOWNWARD_SPEED, MAX_UPWARD_SPEED);
+        }
+    
+        // Ensure minimum speed is applied if necessary
         if (Math.abs(targetPosition - currentPosition) > POSITION_TOLERANCE) {
             if (Math.abs(output) < MIN_SPEED) {
                 output = Math.copySign(MIN_SPEED, output);
             }
         }
+    
         SmartDashboard.putNumber("Elevator Position", currentPosition);
         setMotors(output);
     }

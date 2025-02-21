@@ -40,22 +40,22 @@ public class Shooter implements Subsystem {
             lightstrip.set(Constants.blueLights);
         }
         else {
-            leftShooterMotor.set(0.18);
-            rightShooterMotor.set(-0.18);
+            leftShooterMotor.set(0.15);
+            rightShooterMotor.set(-0.15);
             lightstrip.set(Constants.pinkLights);
         }
     }
 
     public void enableShooter() {
-        leftShooterMotor.set(0.75);
-        rightShooterMotor.set(-0.75);
+        leftShooterMotor.set(0.26);
+        rightShooterMotor.set(-0.26);
         lightstrip.set(Constants.greenLights);
     }
 
     public void stopShooter() {
         leftShooterMotor.set(0);
         rightShooterMotor.set(0);
-    }
+    } 
 
     public void reverseShooter() {
         leftShooterMotor.set(-0.1);

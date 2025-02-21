@@ -135,9 +135,9 @@ public final class Constants {
 
     //Elevator Constants
     public static final double GroundPos = 0;
-    public static final double L2Pos = 8;
-    public static final double L3Pos = 15;
-    public static final double L4Pos = 20;
+    public static final double L2Pos = 6;
+    public static final double L3Pos = 13.2;
+    public static final double L4Pos = 25.5;
 
 
 
