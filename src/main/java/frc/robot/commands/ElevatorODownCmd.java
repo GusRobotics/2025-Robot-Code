@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-//import java.sql.Driver;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,27 +14,28 @@ public class ElevatorODownCmd extends Command {
     public ElevatorODownCmd(Elevator elevator, boolean direction, boolean secondDirection) {
         this.elevator = elevator;
         this.direction = direction;
+        this.secondDirection = secondDirection;
         this.ourTimer = new Timer();
         addRequirements(elevator);
     }
 
-    // Start
     @Override
     public void initialize() {
-        if (direction) 
-        {
-            elevator.reverseElevator();
-        }
-        else if(secondDirection){
-            elevator.stopElevator();
-        }
         ourTimer.restart();
     }
 
     @Override
+    public void execute() {
+        if (direction) {
+            elevator.reverseElevator(); 
+        } else if (secondDirection) {
+            elevator.stopElevator();
+        }
+    }
+
+    @Override
     public void end(boolean terminated) {
-        if (!DriverStation.isAutonomous())
-        {
+        if (!DriverStation.isAutonomous()) {
             elevator.end();
         }
     }

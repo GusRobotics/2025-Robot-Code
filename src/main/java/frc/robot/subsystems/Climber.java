@@ -28,7 +28,7 @@ public class Climber implements Subsystem {
     }
 
     public void enableClimber() {
-        leftClimberMotor.set(0.1);
+        leftClimberMotor.set(-0.1);
         rightClimberMotor.set(0.1);
         Shooter.setLightstrip(Constants.blueLights);
     }
@@ -39,8 +39,8 @@ public class Climber implements Subsystem {
     }
 
     public void reverseClimber() {
-        leftClimberMotor.set(-0.1);
-        rightClimberMotor.set(-0.1);
+        leftClimberMotor.set(0.25);
+        rightClimberMotor.set(-0.25);
     }
 
     /** Ends the elevator function */

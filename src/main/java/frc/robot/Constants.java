@@ -50,50 +50,57 @@ public final class Constants {
         public static final int kRedDriveAbsoluteEncoderPort = 3;
 
         public static final int kPigeonPort = 1;
+  
+  
   //Elevator ID Constants
   public static final int leftElevator = 30; //change
   public static final int rightElevator = 31;//change
+
 
   //Shooter ID Constants
   public static final int leftShooter = 20; //change
   public static final int rightShooter = 21;//change
 
+
   //Climber ID Constants
-  public static final int leftClimber = 92; //Change 
-  public static final int rightClimber = 93;//Change
+  public static final int leftClimber = 40; //Change 
+  public static final int rightClimber = 41;//Change
+
 
   //Light PWM constant
-  public static final int ledChannel = 1;
+  public static final int ledChannel = 0;
 
+
+  //Light Constants
   public static final double pinkLights = 0.57;
   public static final double blueLights = 0.83;
   public static final double yellowLights = 0.69;
   public static final double greenLights = 0.77;
 
-    public static final double kBlueDriveAbsoluteEncoderOffset = -0.16722265625;
-    public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625; 
-    public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37546484375;
-    public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
 
-    public static final boolean kBlueTurningEncoderReversed = false;
-    public static final boolean kGreenTurningEncoderReversed = false;
-    public static final boolean kOrangeTurningEncoderReversed = false;
-    public static final boolean kRedTurningEncoderReversed = false;
+  // Encoder Constants
+  public static final double kBlueDriveAbsoluteEncoderOffset = -0.16722265625;
+  public static final double kGreenDriveAbsoluteEncoderOffset = 0.416259765625; 
+  public static final double kOrangeDriveAbsoluteEncoderOffset = 0.37546484375;
+  public static final double kRedDriveAbsoluteEncoderOffset = -0.18896484375;
 
-    //green and red were originally false
-    public static final boolean kBlueDriveEncoderReversed = false;
-    public static final boolean kGreenDriveEncoderReversed = false;
-    public static final boolean kOrangeDriveEncoderReversed = false;
-    public static final boolean kRedDriveEncoderReversed = false;
+  public static final boolean kBlueTurningEncoderReversed = false;
+  public static final boolean kGreenTurningEncoderReversed = false;
+  public static final boolean kOrangeTurningEncoderReversed = false;
+  public static final boolean kRedTurningEncoderReversed = false;
 
-    public static final boolean kBlueDriveAbsoluteEncoderReversed = true;
-    public static final boolean kGreenDriveAbsoluteEncoderReversed = true;
-    public static final boolean kOrangeDriveAbsoluteEncoderReversed = true;
-    public static final boolean kRedDriveAbsoluteEncoderReversed = true;
+  public static final boolean kBlueDriveEncoderReversed = false;
+  public static final boolean kGreenDriveEncoderReversed = false;
+  public static final boolean kOrangeDriveEncoderReversed = false;
+  public static final boolean kRedDriveEncoderReversed = false;
 
-    // public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-    //   new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+  public static final boolean kBlueDriveAbsoluteEncoderReversed = true;
+  public static final boolean kGreenDriveAbsoluteEncoderReversed = true;
+  public static final boolean kOrangeDriveAbsoluteEncoderReversed = true;
+  public static final boolean kRedDriveAbsoluteEncoderReversed = true;
 
+
+  // Swerve Drive
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
     new Translation2d(kWheelBase / 2, kTrackWidth / 2),   // Front Left
     new Translation2d(kWheelBase / 2, -kTrackWidth / 2),  // Front Right
@@ -101,22 +108,15 @@ public final class Constants {
     new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)  // Back Right
 );
 
-    
+    //Swerve Settings Constants
     public static final int kWheelRadius = 2;
     public static final double kDriveMotorGearRatio = 1 / 5.8462;
     public static final double KTurningMotorGearRatio = 1 / 18.0;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI
       * kWheelDiameterMeters;
     public static final double kTurningEncoderRot2Rad = KTurningMotorGearRatio * 2 * Math.PI;
-    // private static int kDriveEncoderRot2Meter;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
-    
-    //FOR TUNING - PID VALUES
-    public static final double kPTurning = .35; //original value was .3
-    public static final double kPXController = 1.5;
-    public static final double kPYController = 1.5;
-    public static final double kPThetaController = 3;
 
     public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 9.3576;
@@ -127,20 +127,33 @@ public final class Constants {
     public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 5.64558;
 
+
+    //FOR TUNING - PID VALUES
+    public static final double kPTurning = .35; //original value was .3
+    public static final double kPXController = 1.5;
+    public static final double kPYController = 1.5;
+    public static final double kPThetaController = 3;
+
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
       kPhysicalMaxSpeedMetersPerSecond, kPhysicalMaxAngularSpeedRadiansPerSecond);
     TrapezoidProfile.State previousProfiledReference = new TrapezoidProfile.State();
 
+
+    //OI Constants
     public static final double OIConstants = 0.05;
 
-    //Elevator Constants
+
+    //Elevator Level Constants
     public static final double GroundPos = 0;
     public static final double L2Pos = 6;
     public static final double L3Pos = 13.2;
     public static final double L4Pos = 25.5;
 
 
+    //Shooter Constants in Shooter.java
 
-    // public static final boolean driveMotorReversed = false;
-    // public static final boolean turningMotorReversed = false;
+
+
+  
+
 }
