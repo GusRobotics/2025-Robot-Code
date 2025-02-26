@@ -4,23 +4,29 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 //usb camera
-//import edu.wpi.first.cameraserver.CameraServer;
-//import edu.wpi.first.cscore.CvSource;
-//import edu.wpi.first.cscore.UsbCamera;
-//import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveJoystickCmd;
 
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-// import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-// import edu.wpi.first.networktables.NetworkTable;
-// import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.PixelFormat;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -48,14 +54,10 @@ public class Robot extends TimedRobot {
     RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
     RobotContainer.baseController.triangle()::getAsBoolean));
     
-
-    // UsbCamera camera = CameraServer.startAutomaticCapture();
-
-    // // Add the camera video feed to Shuffleboard using the video stream
-    // Shuffleboard.getTab("SmartDashboard")
-    // .add("Live Feed", CameraServer.getVideo())  // Add the video stream (not CvSink)
-    // .withWidget(BuiltInWidgets.kCameraStream)   // Use a CameraStream widget for live video
-    // .withSize(3, 4);  // Set the widget size (optional, adjust to your preference)
+    // Initialize USB camera directly
+    UsbCamera usbCamera = CameraServer.startAutomaticCapture();
+    usbCamera.setResolution(320, 240);
+    usbCamera.setFPS(30);
   }
 
   /**
@@ -72,6 +74,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

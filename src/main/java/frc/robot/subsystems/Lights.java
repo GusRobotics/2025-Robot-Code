@@ -24,6 +24,7 @@ public class Lights implements Subsystem {
     /** Runs the intake forward */
     public void baseLights(){
         lightstrip.set(Constants.pinkLights);
+        System.out.println("base");
     }
 
     public void setSensorTriggered(){
@@ -36,6 +37,6 @@ public class Lights implements Subsystem {
 
     @Override
     public void periodic() {
-
+    
     }
 }

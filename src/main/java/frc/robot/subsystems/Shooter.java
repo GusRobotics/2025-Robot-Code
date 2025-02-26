@@ -15,7 +15,7 @@ public class Shooter implements Subsystem {
     // Hardware
     private SparkMax leftShooterMotor;    
     private SparkMax rightShooterMotor; 
-    private static Spark lightstrip = new Spark(1);
+    private static Spark lightstrip = new Spark(Constants.ledChannel);
 
     private AnalogInput distSensor = new AnalogInput(0);
 

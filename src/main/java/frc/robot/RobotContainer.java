@@ -38,6 +38,9 @@ import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
 import frc.robot.subsystems.Climber;
 
+//import frc.robot.subsystems.Limelight;
+
+
 
 
 /**
@@ -48,60 +51,55 @@ import frc.robot.subsystems.Climber;
  */
 public class RobotContainer {
 
-  //subsystems
+  // subsystems
   public static Shooter shooter = new Shooter();
   public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
   public static Climber climber = new Climber();
+  //private final Limelight limelight = new Limelight();
+
   
-  //controllers
+  // controllers
   public static CommandPS4Controller baseController = new CommandPS4Controller(0);
-  //public static CommandPS4Controller coController = new CommandPS4Controller(1);
 
-  //TRIGGERS
+  // TRIGGERS
 
-  //forward and reverse override for elevator
+  // forward and reverse override for elevator
   private Trigger ElevatorOUp = baseController.povUp();
   private Trigger ElevatorODown = baseController.povDown();
   
-  //coral shooter
+  // coral shooter
   private static final double TRIGGER_THRESHOLD = 0.1;
   private Trigger CoralShot = new Trigger(() -> baseController.getRightX() > TRIGGER_THRESHOLD);
 
-  //coral indexer
+  // coral indexer
   public static boolean isCoralIndexEnabled = false;
   private Trigger CoralIndex = new Trigger(() -> isCoralIndexEnabled); 
 
-  //Climber down and up
+  // Climber down and up
   private Trigger ClimberDown = baseController.R2();
   private Trigger ClimberUp = baseController.L2();
 
-  //presets
+  // presets
   private Trigger ElevatorBottom = baseController.square();
   private Trigger ElevatorL2 = baseController.cross();
   private Trigger ElevatorL3 = baseController.triangle();
   private Trigger ElevatorL4 = baseController.circle();
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
+   * Use this method to define your trigger->command mappings.
    */
   private void configureBindings() {
 
-    //COMMANDS
+    // COMMANDS
 
-    //forward override elevator
+    // forward override elevator
     ElevatorOUp.whileTrue(new ElevatorOUpCmd(elevator, true, false));
 
-    //reverse override elevator
+    // reverse override elevator
     ElevatorODown.whileTrue(new ElevatorODownCmd(elevator, true, false));
 
-    //coral indexing
+    // coral indexing
     baseController.povLeft().onTrue(new InstantCommand(() -> {
       isCoralIndexEnabled = !isCoralIndexEnabled;
     }));
@@ -111,24 +109,23 @@ public class RobotContainer {
 
     CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false));
 
-    //coral shooting
+    // coral shooting
     CoralShot.whileTrue(new CoralShotCmd(shooter));
 
-    //climber down
+    // climber down
     ClimberDown.whileTrue(new ClimberDownCmd(climber, true, false));
 
-    //climber up
+    // climber up
     ClimberUp.whileTrue(new ClimberUpCmd(climber, true, false));
 
-    //elevator presets
+    // elevator presets
     ElevatorBottom.whileTrue(new ElevatorPositionCmd(elevator, Constants.GroundPos));
     ElevatorL2.whileTrue(new ElevatorPositionCmd(elevator, Constants.L2Pos));
     ElevatorL3.whileTrue(new ElevatorPositionCmd(elevator, Constants.L3Pos));
     ElevatorL4.whileTrue(new ElevatorPositionCmd(elevator, Constants.L4Pos));
   }
 
-
-  //PATH PLANNER
+  // PATH PLANNER
 
   private final SendableChooser<Command> autoChooser;
 
@@ -137,7 +134,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
-    //Named Commands for auto
+    // Named Commands for auto
     NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
     NamedCommands.registerCommand("Elevator Override Down", new ElevatorODownCmd(elevator, true, false));
     NamedCommands.registerCommand("Coral Index", new CoralIndexCmd(shooter, true, false));
@@ -152,7 +149,7 @@ public class RobotContainer {
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));
 
-    //set pink lights default
+    // set pink lights default
     shooter.setDefaultLights();
 
     // Build an auto chooser
@@ -168,5 +165,4 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
-
 }
