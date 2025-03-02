@@ -32,7 +32,7 @@ import frc.robot.Constants;
 //import frc.robot.Constants.AutoConstants;
 
 public class SwerveDrive extends SubsystemBase {
-
+    private static SwerveDrive instance;
     private final SwerveModule blue;
     private final SwerveModule red;
     private final SwerveModule green;
@@ -47,6 +47,13 @@ public class SwerveDrive extends SubsystemBase {
     // debug odometer
     SwerveModuleState driveStates[] = new SwerveModuleState[4];
     SwerveModulePosition drivePositions[] = new SwerveModulePosition[4];
+
+    public static SwerveDrive getInstance() {
+        if (instance == null) {
+            instance = new SwerveDrive();
+        }
+        return instance;
+    }
 
     public SwerveDrive () {
         blue = new SwerveModule(
@@ -117,6 +124,8 @@ public class SwerveDrive extends SubsystemBase {
           e.printStackTrace();
         }
 
+        
+
 
         // Configure AutoBuilder last
         AutoBuilder.configure(
@@ -151,6 +160,10 @@ public class SwerveDrive extends SubsystemBase {
         positions[2] = new SwerveModulePosition(0, new Rotation2d(Constants.kRedDriveAbsoluteEncoderOffset));
         positions[3] = new SwerveModulePosition(0, new Rotation2d(Constants.kOrangeDriveAbsoluteEncoderOffset));
         return positions;
+    }
+
+    public void drive(ChassisSpeeds speeds) {
+        driveRobotRelative(speeds);
     }
 
     public void zeroHeading() {

@@ -36,7 +36,7 @@ import frc.robot.commands.CoralIndexCmd;
 import frc.robot.commands.StopCoralIndexCmd;
 import frc.robot.commands.CoralShotCmd;
 import frc.robot.subsystems.Shooter;
-
+import frc.robot.commands.AlignCmd;
 import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
 import frc.robot.subsystems.Climber;
@@ -88,6 +88,7 @@ public class RobotContainer {
   private Trigger ElevatorL2 = baseController.cross();
   private Trigger ElevatorL3 = baseController.triangle();
   private Trigger ElevatorL4 = baseController.circle();
+  private Trigger AutoAlign = baseController.L1();
 
   /**
    * Use this method to define your trigger->command mappings.
@@ -126,6 +127,10 @@ public class RobotContainer {
     ElevatorL2.whileTrue(new ElevatorPositionCmd(elevator, Constants.L2Pos));
     ElevatorL3.whileTrue(new ElevatorPositionCmd(elevator, Constants.L3Pos));
     ElevatorL4.whileTrue(new ElevatorPositionCmd(elevator, Constants.L4Pos));
+
+    // auto align
+    AutoAlign.whileTrue(new AlignCmd(limelight));
+
   }
 
   // PATH PLANNER
@@ -149,6 +154,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2Pos));
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
+    NamedCommands.registerCommand("Auto Align", new AlignCmd(limelight));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

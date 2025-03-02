@@ -3,74 +3,124 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 
-/** Limelight subsystem to retrieve 2D and 3D vision data */
 public class Limelight extends SubsystemBase {
     private final NetworkTable table;
-    
-    // 2D Tracking Entries
-    private final NetworkTableEntry tx;
-    private final NetworkTableEntry ty;
-    private final NetworkTableEntry ta;
+    private final NetworkTableEntry botPoseEntry;
 
-    // 3D Tracking (botpose) Array
-    private final NetworkTableEntry botpose;
+    private Pose3d robotPose;
 
-    private double x, y, area;  // 2D tracking values
-    private double[] pose;      // 3D pose array
-
-    /** Constructor initializes NetworkTables */
+    // Constructor
     public Limelight() {
         this.table = NetworkTableInstance.getDefault().getTable("limelight");
-
-        // 2D vision tracking
-        this.tx = table.getEntry("tx");
-        this.ty = table.getEntry("ty");
-        this.ta = table.getEntry("ta");
-
-        // 3D pose estimation
-        this.botpose = table.getEntry("botpose");
+        this.botPoseEntry = table.getEntry("botpose");  // Fetch the botpose entry from NetworkTables
+        this.robotPose = new Pose3d();  // Initialize an empty robot pose
     }
 
-    /** Reads 2D and 3D values from NetworkTables */
-    public void getValues() {    
-        x = tx.getDouble(0.0);
-        y = ty.getDouble(0.0);
-        area = ta.getDouble(0.0);
-        pose = botpose.getDoubleArray(new double[6]);  // 6D pose (X, Y, Z, Roll, Pitch, Yaw)
+    /** Returns whether the Limelight sees a target */
+    public boolean hasTarget() {
+        return table.getEntry("tv").getDouble(0) > 0.2;  // Check if there's a target detected
     }
 
-    /** Returns the estimated robot pose as a Pose2d object */
-    public Pose2d getEstimatedPose() {
-        if (pose.length < 6) {
-            return new Pose2d(); // Default empty pose
+    /** Returns the horizontal offset (yaw error) from crosshair to target */
+    public double getTX() {
+        return table.getEntry("tx").getDouble(0.0);  // Fetch horizontal offset
+    }
+
+    /** Updates 3D pose values from NetworkTables */
+    public void updatePose() {
+        double[] botpose = botPoseEntry.getDoubleArray(new double[7]);
+
+        if (botpose.length == 6 || botpose.length == 7) {
+            Translation3d translation = new Translation3d(botpose[0], botpose[1], botpose[2]);
+            Rotation3d rotation = new Rotation3d(Math.toRadians(botpose[3]), Math.toRadians(botpose[4]), Math.toRadians(botpose[5]));
+            robotPose = new Pose3d(translation, rotation);
+        } else {
+            System.out.println("Invalid pose data length: " + botpose.length);
         }
-        return new Pose2d(pose[0], pose[1], Rotation2d.fromDegrees(pose[5]));
+    }
+
+    /** Gets the current robot pose */
+    public Pose3d getRobotPose() {
+        return robotPose;
     }
 
     /** Posts values to SmartDashboard */
     public void display() {
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
-
-        SmartDashboard.putNumber("BotPoseX", pose[0]);
-        SmartDashboard.putNumber("BotPoseY", pose[1]);
-        SmartDashboard.putNumber("BotPoseZ", pose[2]);
-        SmartDashboard.putNumber("BotPoseRoll", pose[3]);
-        SmartDashboard.putNumber("BotPosePitch", pose[4]);
-        SmartDashboard.putNumber("BotPoseYaw", pose[5]);
+        SmartDashboard.putBoolean("Has Target", hasTarget());
+        SmartDashboard.putNumber("Target TX", getTX());
+        SmartDashboard.putNumber("Robot X", robotPose.getX());
+        SmartDashboard.putNumber("Robot Y", robotPose.getY());
+        SmartDashboard.putNumber("Robot Rotation", robotPose.getRotation().getZ());
     }
 
-    /** Forces Limelight to stay in vision mode and updates dashboard */
+    /** Check and align robot to an AprilTag */
+    public void checkAndAlignToAprilTag() {
+        if (hasTarget()) {
+            System.out.println("Valid target found. Aligning...");
+            alignToAprilTag();
+        } else {
+            System.out.println("No valid target found.");
+        }
+    }
+
+    /** Aligns robot to an AprilTag based on pose information */
+    public void alignToAprilTag() {
+        if (!hasTarget()) {
+            System.out.println("No target detected, skipping alignment.");
+            return;
+        }
+
+        // Check for invalid pose values
+        if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
+            System.out.println("Invalid pose data, skipping alignment.");
+            return;
+        }
+
+        // Extract translation and rotation information from pose
+        double targetX = robotPose.getX();
+        double targetY = robotPose.getY();
+        double targetRotation = robotPose.getRotation().getZ();
+
+        // Check if the pose values are out of realistic range
+        if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
+            System.out.println("Pose values out of range, skipping alignment.");
+            return;
+        }
+
+        // Proportional control constants
+        double kPX = 0.05; 
+        double kPY = 0.05; 
+        double kPTheta = 0.02;
+
+        // Calculate speeds based on pose errors
+        double forwardSpeed = targetX * kPX;
+        double strafeSpeed = targetY * kPY;
+        double rotationSpeed = targetRotation * kPTheta;
+
+        // Cap the speeds
+        forwardSpeed = Math.max(-1, Math.min(1, forwardSpeed));
+        strafeSpeed = Math.max(-1, Math.min(1, strafeSpeed));
+        rotationSpeed = Math.max(-1, Math.min(1, rotationSpeed));
+
+        // Debug print statements to verify the calculated speeds
+        SmartDashboard.putNumber("Forward Speed", forwardSpeed);
+        SmartDashboard.putNumber("Strafe Speed", strafeSpeed);
+        SmartDashboard.putNumber("Rotation Speed", rotationSpeed);
+
+        // Call the swerve drive system with the calculated speeds
+        SwerveDrive.getInstance().drive(new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed));
+    }
+
     @Override
     public void periodic() {
-        getValues();   // Update vision tracking data
-        display();     // Send values to SmartDashboard
-        table.getEntry("camMode").setNumber(0); // Ensure Vision Processing Mode is enabled
+        updatePose();  // Update pose every cycle
+        display();     // Display pose and other information
     }
 }

@@ -64,7 +64,7 @@ public final class Constants {
 
   //Climber ID Constants
   public static final int leftClimber = 40; //Change 
-  public static final int rightClimber = 41;//Change
+  //public static final int rightClimber = 41;//Change
 
 
   //Light PWM constant
