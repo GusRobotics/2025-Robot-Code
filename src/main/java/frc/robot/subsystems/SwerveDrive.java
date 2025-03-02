@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
-//import java.io.IOException;
 import java.util.Arrays;
-// import java.util.function.Consumer;
-// import java.util.function.Supplier;
 
 //got rid of that pigeon import bc  for some reason it wasn't getting the values of old class
 //import com.ctre.phoenix6.hardware.Pigeon2;
@@ -12,18 +9,6 @@ import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-//import com.revrobotics.spark.config.SparkBaseConfig;
-//import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-//import com.ctre.phoenix6.hardware.CANcoder;
-//import com.revrobotics.spark.config.SparkMaxConfig;
-//import com.ctre.phoenixpro.signals.StatusSignal;
-//import com.ctre.phoenix6.StatusSignal;
-//import com.pathplanner.lib.config.RobotConfig;
-//import com.kauailabs.navx.frc.AHRS;
-// import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-// import com.pathplanner.lib.util.PIDConstants;
-// import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -72,11 +57,6 @@ public class SwerveDrive extends SubsystemBase {
                 Constants.kBlueDriveAbsoluteEncoderPort,
                 Constants.kBlueDriveAbsoluteEncoderOffset,
                 Constants.kBlueDriveAbsoluteEncoderReversed);
-
-        // SparkBaseConfig blueMotorConfig = new SparkBaseConfig();
-        // // Apply the configuration to the motor controller
-        // motor.configure(motorConfig, ConfigResetMode.kNoReset, ConfigPersistMode.kPersist);
-        //SparkMaxConfig motorConfig = new SparkMaxConfig();
 
         orange = new SwerveModule(
                 Constants.orangeDrive,
@@ -162,61 +142,6 @@ public class SwerveDrive extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
-
-        // private final SwerveModule[] allModules = new SwerveModule[]{
-        //     blue,
-        //     orange,
-        //     green,
-        //     red
-        // driveStates[0] = blue.getState();
-        // driveStates[1] = orange.getState();
-        // driveStates[2] = red.getState();
-        // driveStates[3] = green.getState();
-        
-    //     AutoBuilder.configureRamsete(
-    //         this::getPose, // Robot pose supplier
-    //         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-    //         this::getSpeeds,// Current ChassisSpeeds supplier
-    //         this::driveRobot, // Method that will drive the robot given ChassisSpeeds
-    //         new ReplanningConfig(), // Default path replanning config. See the API for the options here
-    //         () -> {
-    //           // Boolean supplier that controls when the path will be mirrored for the red alliance
-    //           // This will flip the path being followed to the red side of the field.
-    //           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-    //           var alliance = DriverStation.getAlliance();
-    //           if (alliance.isPresent()) {
-    //             return alliance.get() == DriverStation.Alliance.Red;
-    //           }
-    //           return false;
-    //         },
-    //         this // Reference to this subsystem to set requirements
-
-            
-    // );
-
-    //     AutoBuilder.configureHolonomic(
-    //     this::getPose, // Robot pose supplier
-    //     this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-    //     this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    //     this::driveRobot, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-    //     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-    //         AutoConstants.KTranslationHolonomicPID, // Translation PID constants
-    //         AutoConstants.KRotationHolonomicPID, // Rotation PID constants
-    //         AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-    //         AutoConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-    //         new ReplanningConfig() // Default path replanning config. See the API for the options here
-    //     ),
-    //     () -> {
-    //         var alliance = DriverStation.getAlliance();
-    //         if (alliance.isPresent()){
-    //             return alliance.get() == DriverStation.Alliance.Red;
-    //         }
-    //         return false;
-    //     },
-    //     this // Reference to this subsystem to set requirements
-    // );
-
         }
 
 
@@ -227,17 +152,6 @@ public class SwerveDrive extends SubsystemBase {
         positions[3] = new SwerveModulePosition(0, new Rotation2d(Constants.kOrangeDriveAbsoluteEncoderOffset));
         return positions;
     }
-
-    // private void driveRobot(ChassisSpeeds robotRelativeSpeeds) {
-    //     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-    
-    //     SwerveModuleState[] targetStates = Constants.kDriveKinematics.toSwerveModuleStates(targetSpeeds);
-    //     setModuleStates(targetStates);
-    //   }
-
-    // private ChassisSpeeds getSpeeds() {
-    //     return Constants.kDriveKinematics.toChassisSpeeds(getModuleStates());
-    //   }
 
     public void zeroHeading() {
         pigeon.reset();
@@ -318,23 +232,20 @@ public class SwerveDrive extends SubsystemBase {
         odometer.update(getRotation2d(), getPosition());
     
     // Gyro and overall robot data
-    SmartDashboard.putNumber("Robot Heading", getHeading());
+    //SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putNumber("Pigeon Raw Yaw", pigeon.getYaw().getValue().magnitude());
     
     // Module states
-    SmartDashboard.putNumber("Drive Speed", blue.getDriveVelocity());
-    SmartDashboard.putNumber("Blue CANCoder Raw", blue.getCancoder());
-    
-    SmartDashboard.putNumber("Red CANCoder Raw", red.getCancoder());
-    
-    SmartDashboard.putNumber("Green CANCoder Raw", green.getCancoder());
-    
-    SmartDashboard.putNumber("Orange CANCoder Raw", orange.getCancoder());
+    //SmartDashboard.putNumber("Drive Speed", blue.getDriveVelocity());
+    SmartDashboard.putNumber("Blue CANCoder", blue.getCancoder());
+    SmartDashboard.putNumber("Red CANCoder", red.getCancoder());
+    SmartDashboard.putNumber("Green CANCoder", green.getCancoder());
+    SmartDashboard.putNumber("Orange CANCoder", orange.getCancoder());
     
     // Odometry
-    SmartDashboard.putNumber("Robot X Position", getPose().getX());
-    SmartDashboard.putNumber("Robot Y Position", getPose().getY());
-    SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
+    //SmartDashboard.putNumber("Robot X Position", getPose().getX());
+    //SmartDashboard.putNumber("Robot Y Position", getPose().getY());
+    //SmartDashboard.putNumber("Robot Rotation", getPose().getRotation().getDegrees());
     }
 
     public void stopModules() {

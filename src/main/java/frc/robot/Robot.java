@@ -8,8 +8,6 @@ import java.util.Map;
 
 //usb camera
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource;
 
@@ -20,13 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveJoystickCmd;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.PixelFormat;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -54,10 +46,10 @@ public class Robot extends TimedRobot {
     RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
     RobotContainer.baseController.triangle()::getAsBoolean));
     
-    // Initialize USB camera directly
-    UsbCamera usbCamera = CameraServer.startAutomaticCapture();
-    usbCamera.setResolution(320, 240);
-    usbCamera.setFPS(30);
+    // Start capturing from the USB camera
+        UsbCamera usbCamera = CameraServer.startAutomaticCapture();
+        usbCamera.setResolution(320, 240);
+        usbCamera.setFPS(30);
   }
 
   /**

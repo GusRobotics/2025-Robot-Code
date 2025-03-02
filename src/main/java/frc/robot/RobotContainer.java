@@ -16,6 +16,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 //import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 //import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +41,7 @@ import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
 import frc.robot.subsystems.Climber;
 
-//import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Limelight;
 
 
 
@@ -56,7 +59,7 @@ public class RobotContainer {
   public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
   public static Climber climber = new Climber();
-  //private final Limelight limelight = new Limelight();
+  private final Limelight limelight = new Limelight();
 
   
   // controllers
@@ -73,8 +76,8 @@ public class RobotContainer {
   private Trigger CoralShot = new Trigger(() -> baseController.getRightX() > TRIGGER_THRESHOLD);
 
   // coral indexer
-  public static boolean isCoralIndexEnabled = false;
-  private Trigger CoralIndex = new Trigger(() -> isCoralIndexEnabled); 
+  public static boolean isCoralIndexEnabled = true;
+  //private Trigger CoralIndex = new Trigger(() -> isCoralIndexEnabled); 
 
   // Climber down and up
   private Trigger ClimberDown = baseController.R2();
@@ -103,11 +106,11 @@ public class RobotContainer {
     baseController.povLeft().onTrue(new InstantCommand(() -> {
       isCoralIndexEnabled = !isCoralIndexEnabled;
     }));
-    CoralShot.onTrue(new InstantCommand(() -> {
-      isCoralIndexEnabled = !isCoralIndexEnabled;
-    }));
+    // CoralShot.onTrue(new InstantCommand(() -> {
+    //   isCoralIndexEnabled = !isCoralIndexEnabled;
+    // }));
 
-    CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false));
+    //CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false));
 
     // coral shooting
     CoralShot.whileTrue(new CoralShotCmd(shooter));
@@ -133,6 +136,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
     
     // Named Commands for auto
     NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
@@ -148,7 +152,7 @@ public class RobotContainer {
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));
-
+    
     // set pink lights default
     shooter.setDefaultLights();
 
@@ -156,6 +160,7 @@ public class RobotContainer {
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

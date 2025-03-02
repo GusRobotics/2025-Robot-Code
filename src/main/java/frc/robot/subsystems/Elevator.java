@@ -25,24 +25,24 @@ public class Elevator implements Subsystem {
     private final PIDController pidController;
 
     // Target position
-    private double targetPosition = 0.0;
+    public static double targetPosition = 0.0;
 
     // PID Constants
-    private static final double kP = 0.1; 
+    private static final double kP = 0.07; 
     private static final double kI = 0.0;
-    private static final double kD = 0.0;
+    private static final double kD = 0.004;
 
     // Position tolerance
-    private static final double POSITION_TOLERANCE = 0.2; 
-    private static final double VELOCITY_TOLERANCE = 0.1;
+    private static final double POSITION_TOLERANCE = 0.03; 
+    private static final double VELOCITY_TOLERANCE = 0.05;
 
     // Speed limits
-    private static final double MAX_UPWARD_SPEED = 0.35;
-    private static final double MAX_DOWNWARD_SPEED = 0.2;
-    private static final double MIN_SPEED = 0.05;
+    private static final double MAX_UPWARD_SPEED = 0.4;
+    private static final double MAX_DOWNWARD_SPEED = 0.25;
+    private static final double MIN_SPEED = 0.03;
 
     // Ramp rate
-    private static final double RAMP_RATE = 0.02; // Adjust this for smoother motion
+    private static final double RAMP_RATE = 0.018; // Adjust this for smoother motion
     private double previousOutput = 0.0;
 
     public Elevator() {

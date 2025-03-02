@@ -10,6 +10,8 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.RobotContainer;
+
 
 public class Shooter implements Subsystem {
     // Hardware
@@ -34,27 +36,48 @@ public class Shooter implements Subsystem {
     public void enableIndex() {
         SmartDashboard.putNumber("Distance Sensor", distSensor.getValue());
         
-        if(distSensor.getValue() > 700){
-            leftShooterMotor.set(0);
-            rightShooterMotor.set(0);
-            lightstrip.set(Constants.blueLights);
-        }
-        else {
-            leftShooterMotor.set(0.15);
-            rightShooterMotor.set(-0.15);
-            lightstrip.set(Constants.pinkLights);
+        if (RobotContainer.isCoralIndexEnabled) {
+            if (distSensor.getValue() > 700) {
+                leftShooterMotor.set(0);
+                rightShooterMotor.set(0);
+                lightstrip.set(Constants.blueLights);
+            } else {
+                leftShooterMotor.set(0.15);
+                rightShooterMotor.set(-0.15);
+                lightstrip.set(Constants.pinkLights);
+            }
+        } else {
+            // Indexing is disabled, stop the motors
+            end();
         }
     }
 
+    public void isSensorWorking() {
+        boolean isWorking = distSensor.getValue() > 205 && distSensor.getValue() < 209; // Sensor is between 207 and 208 when not working
+        SmartDashboard.putBoolean("Sensor Working", !isWorking);
+    }
+    
     public void enableShooter() {
-        leftShooterMotor.set(0.26);
-        rightShooterMotor.set(-0.26);
         lightstrip.set(Constants.greenLights);
+        if (Elevator.targetPosition < 6){
+            leftShooterMotor.set(0.2);
+            rightShooterMotor.set(-0.2);
+        }
+        else{
+            leftShooterMotor.set(0.26);
+            rightShooterMotor.set(-0.26);
+        }
+            
     }
 
     public void stopShooter() {
         leftShooterMotor.set(0);
         rightShooterMotor.set(0);
+    } 
+
+    public void lowPowerShot() {
+        leftShooterMotor.set(0.17);
+        rightShooterMotor.set(-0.17);
     } 
 
     public void reverseShooter() {
@@ -78,6 +101,6 @@ public class Shooter implements Subsystem {
 
     @Override
     public void periodic() {
-
+        isSensorWorking();
     }
 }
