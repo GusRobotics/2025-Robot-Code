@@ -295,12 +295,9 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void teleopControlSwerve(double leftX, double leftY, double rightX) {
-        // value originally Math.atan(leftY/leftX)/(Math.PI *2), got rid of dividing by
-        // pi
         Rotation2d desRot = new Rotation2d(Math.atan2(leftY, leftX));
         double velocity = leftY;
 
-        // this works!!! time to scale the vectors!!
         // check if lefty is not 1 or -1 (full magnitudes)
         // SlewRateLimiter xLimiter = new SlewRateLimiter(0.5);
         // SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
@@ -329,6 +326,23 @@ public class SwerveDrive extends SubsystemBase {
         blue.setDesiredState(desiredState);
         red.setDesiredState(desiredState);
         orange.setDesiredState(desiredState);
+    }
+
+    public void alignSwerve(double forwardSpeed, double strafeSpeed, double rotationSpeed) {
+        // Create a ChassisSpeeds object using the provided speeds
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
+
+        // Use kinematics to calculate swerve module states
+        SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+        // Normalize speeds if necessary to ensure no module exceeds max speed
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
+
+        // Set the desired state for each swerve module
+        blue.setDesiredState(moduleStates[0]);    // Front Left (Blue)
+        orange.setDesiredState(moduleStates[1]);  // Front Right (Orange)
+        green.setDesiredState(moduleStates[2]);   // Back Left (Green)
+        red.setDesiredState(moduleStates[3]);     // Back Right (Red)
     }
 
     public void execute(double leftX, double leftY, double rightX) {
