@@ -329,6 +329,17 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void alignSwerve(double forwardSpeed, double strafeSpeed, double rotationSpeed) {
+        
+        // Apply deadband (same as joystick code) (CHANGE CONSTANT FOR THIS BUT MAKE A NEW ONE)
+        forwardSpeed = Math.abs(forwardSpeed) > Constants.OIConstants ? forwardSpeed : 0.0;
+        strafeSpeed = Math.abs(strafeSpeed) > Constants.OIConstants ? strafeSpeed : 0.0;
+        rotationSpeed = Math.abs(rotationSpeed) > Constants.OIConstants ? rotationSpeed : 0.0;
+
+        // Smoothing with limiters
+        forwardSpeed = xLimiter.calculate(forwardSpeed) * Constants.kTeleDriveMaxSpeedMetersPerSecond;
+        strafeSpeed = yLimiter.calculate(strafeSpeed) * Constants.kTeleDriveMaxSpeedMetersPerSecond;
+        rotationSpeed = turningLimiter.calculate(rotationSpeed) * Constants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+        
         // Create a ChassisSpeeds object using the provided speeds
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
 
@@ -339,10 +350,7 @@ public class SwerveDrive extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
 
         // Set the desired state for each swerve module
-        blue.setDesiredState(moduleStates[0]);    // Front Left (Blue)
-        orange.setDesiredState(moduleStates[1]);  // Front Right (Orange)
-        green.setDesiredState(moduleStates[2]);   // Back Left (Green)
-        red.setDesiredState(moduleStates[3]);     // Back Right (Red)
+        this.setModuleStates(moduleStates);
     }
 
     public void execute(double leftX, double leftY, double rightX) {

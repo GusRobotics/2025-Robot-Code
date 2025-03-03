@@ -3,7 +3,6 @@ package frc.robot.commands;
 //import java.sql.Driver;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
@@ -11,12 +10,10 @@ public class ClimberUpCmd extends Command {
     private Climber climber;
     private boolean direction;
     private boolean secondDirection;
-    private Timer ourTimer;
 
     public ClimberUpCmd(Climber climber, boolean direction, boolean secondDirection) {
         this.climber = climber;
         this.direction = direction;
-        this.ourTimer = new Timer();
         addRequirements(climber);
     }
 
@@ -30,7 +27,6 @@ public class ClimberUpCmd extends Command {
         else if(secondDirection){
             climber.stopClimber();
         }
-        ourTimer.restart();
     }
 
     @Override
@@ -41,8 +37,4 @@ public class ClimberUpCmd extends Command {
         }
     }
 
-    @Override
-    public boolean isFinished() { 
-        return DriverStation.isAutonomous() && ourTimer.get() > 3; 
-    }
 }

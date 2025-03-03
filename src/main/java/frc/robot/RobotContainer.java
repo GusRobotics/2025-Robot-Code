@@ -5,9 +5,7 @@
 package frc.robot;
 
 //import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.Autos;
 //import frc.robot.commands.SwerveJoystickCmd;
-//import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -31,7 +29,6 @@ import frc.robot.commands.ElevatorODownCmd;
 import frc.robot.subsystems.Elevator;
 
 import frc.robot.commands.CoralIndexCmd;
-import frc.robot.commands.StopCoralIndexCmd;
 import frc.robot.commands.CoralShotCmd;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.AlignCmd;
@@ -105,11 +102,6 @@ public class RobotContainer {
     baseController.povLeft().onTrue(new InstantCommand(() -> {
       isCoralIndexEnabled = !isCoralIndexEnabled;
     }));
-    // CoralShot.onTrue(new InstantCommand(() -> {
-    //   isCoralIndexEnabled = !isCoralIndexEnabled;
-    // }));
-
-    //CoralIndex.whileTrue(new StopCoralIndexCmd(shooter, false));
 
     // coral shooting
     CoralShot.whileTrue(new CoralShotCmd(shooter));

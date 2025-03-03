@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
-//import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.Constants;
@@ -14,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Limelight extends SubsystemBase {
     private final NetworkTable table;
     private final NetworkTableEntry botPoseEntry;
-
     private Pose3d robotPose;
+    private boolean isTracking;
 
     // Constructor
     public Limelight() {
@@ -26,7 +25,7 @@ public class Limelight extends SubsystemBase {
 
     /** Returns whether the Limelight sees a target */
     public boolean hasTarget() {
-        return table.getEntry("tv").getDouble(0) > 0.2;  // Check if there's a target detected
+        return table.getEntry("tv").getDouble(0) > 0.2;
     }
 
     /** Returns the horizontal offset (yaw error) from crosshair to target */
@@ -59,30 +58,28 @@ public class Limelight extends SubsystemBase {
         SmartDashboard.putNumber("Robot X", robotPose.getX());
         SmartDashboard.putNumber("Robot Y", robotPose.getY());
         SmartDashboard.putNumber("Robot Rotation", robotPose.getRotation().getZ());
+        SmartDashboard.putBoolean("Tracking", isTracking);
+
     }
 
     /** Check and align robot to an AprilTag */
     public void checkAndAlignToAprilTag() {
         if (hasTarget()) {
-            System.out.println("Valid target found. Aligning...");
+            isTracking = true;
             alignToAprilTag();
         } else {
-            System.out.println("No valid target found.");
+            isTracking = false;
         }
     }
 
     /** Aligns robot to an AprilTag based on pose information */
     public void alignToAprilTag() {
-        if (!hasTarget()) {
-            System.out.println("No target detected, skipping alignment.");
-            return;
-        }
 
         // Check for invalid pose values
-        if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
-            System.out.println("Invalid pose data, skipping alignment.");
-            return;
-        }
+        // if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
+        //     System.out.println("Invalid pose data, skipping alignment.");
+        //     return;
+        // }
 
         // Extract translation and rotation information from pose
         double targetX = robotPose.getX();
@@ -90,10 +87,10 @@ public class Limelight extends SubsystemBase {
         double targetRotation = robotPose.getRotation().getZ();
 
         // Check if the pose values are out of realistic range
-        if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
-            System.out.println("Pose values out of range, skipping alignment.");
-            return;
-        }
+        // if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
+        //     System.out.println("Pose values out of range, skipping alignment.");
+        //     return;
+        // }
 
         
         // Proportional constants
@@ -106,7 +103,7 @@ public class Limelight extends SubsystemBase {
         double strafeSpeed = targetY * kPY;
         double rotationSpeed = targetRotation * kPTheta;
         
-        // Cap the speeds
+        // Cap the speeds (TEST IF NECESSARY)
         forwardSpeed = Math.max(-1, Math.min(1, forwardSpeed));
         strafeSpeed = Math.max(-1, Math.min(1, strafeSpeed));
         rotationSpeed = Math.max(-1, Math.min(1, rotationSpeed));
@@ -118,8 +115,8 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updatePose();  // Update pose every cycle
-        display();     // Display pose and other information
+        updatePose(); 
+        display();    
     }
 }
 
