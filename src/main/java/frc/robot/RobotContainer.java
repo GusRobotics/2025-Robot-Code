@@ -54,7 +54,7 @@ public class RobotContainer {
   public static Elevator elevator = new Elevator();
   public static SwerveDrive drive = new SwerveDrive();
   public static Climber climber = new Climber();
-  private final Limelight limelight = new Limelight();
+  private final Limelight limelight = new Limelight(drive);
 
   
   // controllers
@@ -140,7 +140,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
     NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
     NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter));
+    //lower powered coral shot??
     NamedCommands.registerCommand("Ground", new ElevatorPositionCmd(elevator, Constants.GroundPos));
+    //L1?
     NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2Pos));
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));

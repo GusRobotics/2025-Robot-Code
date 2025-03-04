@@ -329,29 +329,42 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void alignSwerve(double forwardSpeed, double strafeSpeed, double rotationSpeed) {
-        
-        // Apply deadband (same as joystick code) (CHANGE CONSTANT FOR THIS BUT MAKE A NEW ONE)
+    
+        // Apply deadband (same as joystick code)
         forwardSpeed = Math.abs(forwardSpeed) > Constants.OIConstants ? forwardSpeed : 0.0;
         strafeSpeed = Math.abs(strafeSpeed) > Constants.OIConstants ? strafeSpeed : 0.0;
         rotationSpeed = Math.abs(rotationSpeed) > Constants.OIConstants ? rotationSpeed : 0.0;
-
-        // Smoothing with limiters
-        forwardSpeed = xLimiter.calculate(forwardSpeed) * Constants.kTeleDriveMaxSpeedMetersPerSecond;
-        strafeSpeed = yLimiter.calculate(strafeSpeed) * Constants.kTeleDriveMaxSpeedMetersPerSecond;
-        rotationSpeed = turningLimiter.calculate(rotationSpeed) * Constants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
-        
-        // Create a ChassisSpeeds object using the provided speeds
+    
+        // Cap the speeds
+        forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
+        strafeSpeed = Math.max(-0.25, Math.min(0.25, strafeSpeed));
+        rotationSpeed = Math.max(-0.5, Math.min(0.5, rotationSpeed));
+    
+        // Rotate the speeds by -45 degrees to compensate for the misalignment (only for forward/strafe)
+        double angleOffset = Math.toRadians(-45);  // Rotate by -45 degrees
+        double tempForwardSpeed = forwardSpeed * Math.cos(angleOffset) - strafeSpeed * Math.sin(angleOffset);
+        double tempStrafeSpeed = forwardSpeed * Math.sin(angleOffset) + strafeSpeed * Math.cos(angleOffset);
+    
+        // Use the rotated speeds for forward and strafe
+        forwardSpeed = tempForwardSpeed;
+        //strafeSpeed = tempStrafeSpeed;
+    
+        // Create a ChassisSpeeds object using robot-relative speeds (keep rotation unchanged)
         ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
-
+    
         // Use kinematics to calculate swerve module states
         SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-
+    
         // Normalize speeds if necessary to ensure no module exceeds max speed
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
-
+    
         // Set the desired state for each swerve module
         this.setModuleStates(moduleStates);
     }
+    
+    
+    
+    
 
     public void execute(double leftX, double leftY, double rightX) {
         // 1. Get real-time joystick inputs
