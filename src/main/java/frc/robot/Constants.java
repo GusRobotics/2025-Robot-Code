@@ -76,6 +76,8 @@ public final class Constants {
   public static final double blueLights = 0.83;
   public static final double yellowLights = 0.69;
   public static final double greenLights = 0.77;
+  public static final double orangeLights = 0.63;
+
 
 
   // Encoder Constants
@@ -142,6 +144,8 @@ public final class Constants {
     //OI Constants
     public static final double OIConstants = 0.05;
 
+    //Limelight align
+    public static final double rotationOIConstant = 0.1;
 
     //Elevator Level Constants
     public static final double GroundPos = 0;

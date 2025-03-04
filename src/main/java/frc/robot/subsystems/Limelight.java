@@ -95,31 +95,9 @@ public class Limelight extends SubsystemBase {
         return;
     }
 
-    // Proportional constants (tune these based on testing)
-    double kPX = 1;
-    double kPY = 1;
-    double kPTheta = 1.25;
-
-    // Calculate speeds based on errors
-    double forwardSpeed = targetX * kPX;
-    double strafeSpeed = targetY * kPY;
-    double rotationSpeed = targetRotation * kPTheta;
-
-    // Apply deadband to rotation speed (add a small tolerance)
-
-    // Cap the speeds
-    forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
-    strafeSpeed = Math.max(-0.5, Math.min(0.5, strafeSpeed));
-    //rotationSpeed = Math.max(-1, Math.min(1, rotationSpeed));
-
-    // Normalize target rotation to range [-180, 180]
-    targetRotation = (targetRotation + 180) % 360 - 180;
-
-    // Invert rotation speed if necessary (depending on observed behavior)
-    rotationSpeed = -rotationSpeed;
 
     // Only update the alignment if enough time has passed (to reduce jitter)
-    swerveDrive.alignSwerve(forwardSpeed, strafeSpeed, rotationSpeed);
+    swerveDrive.alignSwerve(targetX, targetY, targetRotation);
 }
 
 

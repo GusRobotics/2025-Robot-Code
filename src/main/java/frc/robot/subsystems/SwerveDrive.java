@@ -328,29 +328,62 @@ public class SwerveDrive extends SubsystemBase {
         orange.setDesiredState(desiredState);
     }
 
-    public void alignSwerve(double forwardSpeed, double strafeSpeed, double rotationSpeed) {
-    
+    public void alignSwerve(double targetX, double targetY, double targetRotation) {
+        
+        Shooter.lightstrip.set(Constants.orangeLights);
+        // Proportional constants (tune these based on testing)
+        double kPX = 1;
+        double kPY = 1;
+        double kPTheta = 4.25;
+
+        // Calculate speeds based on errors
+        double forwardSpeed = targetX; //* kPX;
+        double strafeSpeed = targetY; //* kPY;
+        double rotationSpeed = -targetRotation * kPTheta;
+
+
+        double maxRotationChangePerCycle = 0.015; // Adjust this value based on how smooth you want the changes to be
+        rotationSpeed = Math.max(rotationSpeed - maxRotationChangePerCycle, Math.min(rotationSpeed + maxRotationChangePerCycle, rotationSpeed));
+
+        
+
+        // Cap the speeds
+        // forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
+        // strafeSpeed = Math.max(-0.5, Math.min(0.5, strafeSpeed));
+        //rotationSpeed = Math.max(-1, Math.min(1, rotationSpeed));
+
+        // Normalize target rotation to range [-180, 180]
+        // targetRotation = (targetRotation + 180) % 360 - 180;
+
+        // Invert rotation speed if necessary (depending on observed behavior)
+        // rotationSpeed = -rotationSpeed;
+
         // Apply deadband (same as joystick code)
-        forwardSpeed = Math.abs(forwardSpeed) > Constants.OIConstants ? forwardSpeed : 0.0;
-        strafeSpeed = Math.abs(strafeSpeed) > Constants.OIConstants ? strafeSpeed : 0.0;
-        rotationSpeed = Math.abs(rotationSpeed) > Constants.OIConstants ? rotationSpeed : 0.0;
+        // forwardSpeed = Math.abs(forwardSpeed) > Constants.OIConstants ? forwardSpeed : 0.0;
+        // strafeSpeed = Math.abs(strafeSpeed) > Constants.OIConstants ? strafeSpeed : 0.0;
+        rotationSpeed = Math.abs(rotationSpeed) > Constants.rotationOIConstant ? rotationSpeed : 0.0;
+
+        
     
         // Cap the speeds
-        forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
-        strafeSpeed = Math.max(-0.25, Math.min(0.25, strafeSpeed));
-        rotationSpeed = Math.max(-0.5, Math.min(0.5, rotationSpeed));
+        // forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
+        // strafeSpeed = Math.max(-0.25, Math.min(0.25, strafeSpeed));
+        // rotationSpeed = Math.max(-0.5, Math.min(0.5, rotationSpeed));
     
         // Rotate the speeds by -45 degrees to compensate for the misalignment (only for forward/strafe)
-        double angleOffset = Math.toRadians(-45);  // Rotate by -45 degrees
-        double tempForwardSpeed = forwardSpeed * Math.cos(angleOffset) - strafeSpeed * Math.sin(angleOffset);
-        double tempStrafeSpeed = forwardSpeed * Math.sin(angleOffset) + strafeSpeed * Math.cos(angleOffset);
+        //double angleOffset = Math.toRadians(-45);  // Rotate by -45 degrees
+        //double tempForwardSpeed = forwardSpeed * Math.cos(angleOffset) - strafeSpeed * Math.sin(angleOffset);
+        //double tempStrafeSpeed = forwardSpeed * Math.sin(angleOffset) + strafeSpeed * Math.cos(angleOffset);
     
         // Use the rotated speeds for forward and strafe
-        forwardSpeed = tempForwardSpeed;
+        //forwardSpeed = tempForwardSpeed;
         //strafeSpeed = tempStrafeSpeed;
     
+
+        
         // Create a ChassisSpeeds object using robot-relative speeds (keep rotation unchanged)
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
+        //ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, rotationSpeed);
     
         // Use kinematics to calculate swerve module states
         SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
