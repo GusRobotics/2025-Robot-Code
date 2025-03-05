@@ -6,7 +6,6 @@ package frc.robot;
 
 //import frc.robot.Constants.OperatorConstants;
 //import frc.robot.commands.SwerveJoystickCmd;
-import frc.robot.subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -23,20 +22,25 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 //import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Limelight;
+
 import frc.robot.commands.ElevatorOUpCmd;
 import frc.robot.commands.ElevatorPositionCmd;
 import frc.robot.commands.ElevatorODownCmd;
-import frc.robot.subsystems.Elevator;
-
 import frc.robot.commands.CoralIndexCmd;
 import frc.robot.commands.CoralShotCmd;
-import frc.robot.subsystems.Shooter;
+import frc.robot.commands.L1ShotCmd;
 import frc.robot.commands.AlignCmd;
 import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
-import frc.robot.subsystems.Climber;
 
-import frc.robot.subsystems.Limelight;
+
+
+
 
 
 
@@ -134,19 +138,19 @@ public class RobotContainer {
 
     
     // Named Commands for auto
-    NamedCommands.registerCommand("Elevator Override Up", new ElevatorOUpCmd(elevator, true, false));
-    NamedCommands.registerCommand("Elevator Override Down", new ElevatorODownCmd(elevator, true, false));
-    NamedCommands.registerCommand("Coral Index", new CoralIndexCmd(shooter, true, false));
-    NamedCommands.registerCommand("Climber Down", new ClimberDownCmd(climber, true, false));
-    NamedCommands.registerCommand("Climber Up", new ClimberUpCmd(climber, true, false));
-    NamedCommands.registerCommand("Coral Shot", new CoralShotCmd(shooter));
-    //lower powered coral shot??
+    NamedCommands.registerCommand("ElevatorOverrideUp", new ElevatorOUpCmd(elevator, true, false));
+    NamedCommands.registerCommand("ElevatorOverrideDown", new ElevatorODownCmd(elevator, true, false));
+    NamedCommands.registerCommand("CoralIndex", new CoralIndexCmd(shooter, true, false));
+    NamedCommands.registerCommand("ClimberDown", new ClimberDownCmd(climber, true, false));
+    NamedCommands.registerCommand("ClimberUp", new ClimberUpCmd(climber, true, false));
+    NamedCommands.registerCommand("CoralShot", new CoralShotCmd(shooter));
+    NamedCommands.registerCommand("L1Shot", new L1ShotCmd(shooter));
     NamedCommands.registerCommand("Ground", new ElevatorPositionCmd(elevator, Constants.GroundPos));
-    //L1?
+    NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L1Pos));
     NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2Pos));
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
-    NamedCommands.registerCommand("Auto Align", new AlignCmd(limelight));
+    NamedCommands.registerCommand("AutoAlign", new AlignCmd(limelight));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

@@ -5,15 +5,34 @@
     "data": {
       "commands": [
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AutoAlign"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "One Piece Straight"
+            "pathName": "M Vision Correction"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L4"
+            "name": "L1"
           }
         },
         {
@@ -29,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Coral Shot"
+                  "name": "CoralShot"
                 }
               }
             ]
@@ -40,17 +59,11 @@
           "data": {
             "name": "Ground"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "M Swoop L"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mid Autos",
+  "folder": "Mid Vision Autos",
   "choreoAuto": false
 }

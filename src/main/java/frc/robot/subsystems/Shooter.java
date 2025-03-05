@@ -75,7 +75,7 @@ public class Shooter implements Subsystem {
         rightShooterMotor.set(0);
     } 
 
-    public void lowPowerShot() {
+    public void L1Shot() {
         leftShooterMotor.set(0.17);
         rightShooterMotor.set(-0.17);
     } 

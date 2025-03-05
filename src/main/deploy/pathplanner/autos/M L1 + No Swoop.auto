@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4"
+            "name": "L1"
           }
         },
         {
@@ -29,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Coral Shot"
+                  "name": "CoralShot"
                 }
               }
             ]

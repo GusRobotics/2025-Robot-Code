@@ -17,10 +17,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Auto Align"
+                  "name": "AutoAlign"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "M Vision Correction"
           }
         },
         {
@@ -42,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Coral Shot"
+                  "name": "CoralShot"
                 }
               }
             ]
@@ -58,6 +64,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Mid Autos",
+  "folder": "Mid Vision Autos",
   "choreoAuto": false
 }

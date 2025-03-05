@@ -151,7 +151,7 @@ public class SwerveDrive extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
-        }
+    }
 
 
     public SwerveModulePosition[] positioning(SwerveModulePosition[] positions) {
