@@ -328,40 +328,58 @@ public class SwerveDrive extends SubsystemBase {
         orange.setDesiredState(desiredState);
     }
 
-    public void alignSwerve(double targetX, double targetY, double targetRotation) {
+    public void alignSwerve(double targetX, double targetY, double targetRotation, double tagArea) {
         
         Shooter.lightstrip.set(Constants.orangeLights);
         // Proportional constants (tune these based on testing)
         double kPX = 1;
-        double kPY = 1;
+        double kPY = 3.25;
         double kPTheta = 4.25;
+
+        double rotationOIConstant = 0.6;
+        double strafeOIConstant = 0.4;
+
+        if (tagArea > 8) {
+            rotationOIConstant = 0.1;
+            strafeOIConstant = 0.08;
+            kPY = 4.25;
+            kPTheta = 5;
+        }
+        else if (tagArea > 6) {
+            rotationOIConstant = 0.25;
+            strafeOIConstant = 0.15;
+            kPY = 3.75;
+            kPTheta = 4.75;
+        }
+        else if (tagArea > 4) {
+            rotationOIConstant = 0.4;
+            strafeOIConstant = 0.25;
+            kPY = 3.5;
+            kPTheta = 4.5;
+        }
+        
 
         // Calculate speeds based on errors
         double forwardSpeed = targetX; //* kPX;
-        double strafeSpeed = targetY; //* kPY;
+        double strafeSpeed = -(targetY + 1.26) * kPY;
         double rotationSpeed = -targetRotation * kPTheta;
 
 
         double maxRotationChangePerCycle = 0.015; // Adjust this value based on how smooth you want the changes to be
         rotationSpeed = Math.max(rotationSpeed - maxRotationChangePerCycle, Math.min(rotationSpeed + maxRotationChangePerCycle, rotationSpeed));
 
+        double maxStrafeChangePerCycle = 0.01; // was 0.01
+        strafeSpeed = Math.max(strafeSpeed - maxStrafeChangePerCycle, Math.min(strafeSpeed + maxStrafeChangePerCycle, strafeSpeed));
+
+        // SmartDashboard.putNumber("forward", forwardSpeed);
+        // SmartDashboard.putNumber("strafe", strafeSpeed);
+        // SmartDashboard.putNumber("rotate", rotationSpeed);
+        // SmartDashboard.putNumber("area", tagArea);
+
         
 
-        // Cap the speeds
-        // forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
-        // strafeSpeed = Math.max(-0.5, Math.min(0.5, strafeSpeed));
-        //rotationSpeed = Math.max(-1, Math.min(1, rotationSpeed));
-
-        // Normalize target rotation to range [-180, 180]
-        // targetRotation = (targetRotation + 180) % 360 - 180;
-
-        // Invert rotation speed if necessary (depending on observed behavior)
-        // rotationSpeed = -rotationSpeed;
-
-        // Apply deadband (same as joystick code)
-        // forwardSpeed = Math.abs(forwardSpeed) > Constants.OIConstants ? forwardSpeed : 0.0;
-        // strafeSpeed = Math.abs(strafeSpeed) > Constants.OIConstants ? strafeSpeed : 0.0;
-        rotationSpeed = Math.abs(rotationSpeed) > Constants.rotationOIConstant ? rotationSpeed : 0.0;
+        rotationSpeed = Math.abs(rotationSpeed) > rotationOIConstant ? rotationSpeed : 0.0;
+        strafeSpeed = Math.abs(strafeSpeed) > strafeOIConstant ? strafeSpeed : 0.0;
 
         
     
@@ -379,11 +397,12 @@ public class SwerveDrive extends SubsystemBase {
         //forwardSpeed = tempForwardSpeed;
         //strafeSpeed = tempStrafeSpeed;
     
-
+        //0.75
+        //rotationSpeed = Math.max(-1.3, Math.min(1.3, rotationSpeed));
         
         // Create a ChassisSpeeds object using robot-relative speeds (keep rotation unchanged)
         //ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, rotationSpeed);
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, 1, rotationSpeed);
     
         // Use kinematics to calculate swerve module states
         SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
@@ -394,7 +413,6 @@ public class SwerveDrive extends SubsystemBase {
         // Set the desired state for each swerve module
         this.setModuleStates(moduleStates);
     }
-    
     
     
     

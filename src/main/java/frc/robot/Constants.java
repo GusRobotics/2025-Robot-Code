@@ -144,8 +144,7 @@ public final class Constants {
     //OI Constants
     public static final double OIConstants = 0.05;
 
-    //Limelight align
-    public static final double rotationOIConstant = 0.1;
+
 
     //Elevator Level Constants
     public static final double GroundPos = 0;

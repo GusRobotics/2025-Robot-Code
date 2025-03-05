@@ -78,27 +78,30 @@ public class Limelight extends SubsystemBase {
     /** Aligns robot to an AprilTag based on pose information */
     public void alignToAprilTag() {
 
-    // Check for invalid pose values
-    if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
-        System.out.println("Invalid pose data, skipping alignment.");
-        return;
+        // Check for invalid pose values
+        if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
+            System.out.println("Invalid pose data, skipping alignment.");
+            return;
+        }
+
+        // Extract translation and rotation information from pose
+        double targetX = robotPose.getX();
+        double targetY = robotPose.getY();
+        double targetRotation = robotPose.getRotation().getZ();
+
+        double tagArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
+
+
+        // Check if the pose values are out of realistic range
+        if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
+            System.out.println("Pose values out of range, skipping alignment.");
+            return;
+        }
+
+
+        // Only update the alignment if enough time has passed (to reduce jitter)
+        swerveDrive.alignSwerve(targetX, targetY, targetRotation, tagArea);
     }
-
-    // Extract translation and rotation information from pose
-    double targetX = robotPose.getX();
-    double targetY = robotPose.getY();
-    double targetRotation = robotPose.getRotation().getZ();
-
-    // Check if the pose values are out of realistic range
-    if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
-        System.out.println("Pose values out of range, skipping alignment.");
-        return;
-    }
-
-
-    // Only update the alignment if enough time has passed (to reduce jitter)
-    swerveDrive.alignSwerve(targetX, targetY, targetRotation);
-}
 
 
     @Override

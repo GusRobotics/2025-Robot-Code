@@ -8,7 +8,7 @@ import frc.robot.Constants;
 /** Lower Intake Subsystem */
 public class Lights implements Subsystem {
 
-    private Spark lightstrip = new Spark(Constants.ledChannel);
+    public static Spark lightstrip = new Spark(Constants.ledChannel);
     
     // Init
     public Lights() {
