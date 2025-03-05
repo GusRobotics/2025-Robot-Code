@@ -146,7 +146,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("CoralShot", new CoralShotCmd(shooter));
     NamedCommands.registerCommand("L1Shot", new L1ShotCmd(shooter));
     NamedCommands.registerCommand("Ground", new ElevatorPositionCmd(elevator, Constants.GroundPos));
-    NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L1Pos));
+    NamedCommands.registerCommand("L1", new ElevatorPositionCmd(elevator, Constants.L1Pos));
     NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2Pos));
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
