@@ -345,7 +345,7 @@ public class SwerveDrive extends SubsystemBase {
         
         Shooter.lightstrip.set(Constants.orangeLights);
         // Proportional constants (tune these based on testing)
-        double kPX = 1;
+        //double kPX = 1;
         double kPY = 3.25;
         double kPTheta = 4.25;
 
@@ -373,7 +373,7 @@ public class SwerveDrive extends SubsystemBase {
         
 
         // Calculate speeds based on errors
-        double forwardSpeed = targetX; //* kPX;
+        //double forwardSpeed = targetX; //* kPX;
         double strafeSpeed = -(targetY + 1.26) * kPY;
         double rotationSpeed = -targetRotation * kPTheta;
 
