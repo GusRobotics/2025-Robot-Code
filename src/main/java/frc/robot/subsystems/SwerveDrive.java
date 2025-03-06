@@ -186,6 +186,19 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose){
+        // Ensure the odometer has been initialized
+        if (odometer == null) {
+            System.err.println("Odometer is not initialized.");
+            return;  // Early exit if odometer is not initialized
+        }
+    
+        // Ensure pose is not null before resetting
+        if (pose == null) {
+            System.err.println("Pose is null.");
+            return;  // Early exit if pose is null
+        }
+    
+        // Now reset the odometer position
         odometer.resetPosition(getRotation2d(), getPosition(), pose);
     }
 

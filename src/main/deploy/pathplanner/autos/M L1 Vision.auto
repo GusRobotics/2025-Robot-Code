@@ -17,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AutoAlign"
+                  "name": null
                 }
               }
             ]
@@ -32,7 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L1"
+            "name": null
           }
         },
         {
@@ -48,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1Shot"
+                  "name": null
                 }
               }
             ]
@@ -57,7 +57,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Ground"
+            "name": null
           }
         }
       ]
