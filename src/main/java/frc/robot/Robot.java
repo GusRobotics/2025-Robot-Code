@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.drive, new SwerveJoystickCmd(RobotContainer.drive,
     RobotContainer.baseController::getLeftX, RobotContainer.baseController::getLeftY, RobotContainer.baseController::getR2Axis,
-    RobotContainer.baseController.triangle()::getAsBoolean));
+    RobotContainer.baseController.R1()::getAsBoolean));
     
     // Start capturing from the USB camera
         UsbCamera usbCamera = CameraServer.startAutomaticCapture();
