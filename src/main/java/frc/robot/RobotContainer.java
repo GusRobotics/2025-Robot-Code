@@ -89,7 +89,6 @@ public class RobotContainer {
   private Trigger ElevatorL3 = baseController.triangle();
   private Trigger ElevatorL4 = baseController.circle();
   private Trigger AutoAlign = baseController.L1();
-  private Trigger ResetSwerve = baseController.R1();
   
 
   /**
@@ -128,8 +127,6 @@ public class RobotContainer {
     // auto align
     //AutoAlign.whileTrue(new AlignCmd(limelight));
 
-    //reset swerve
-    //ResetSwerve.whileTrue(new ResetSwerveCmd());
 
   }
 
