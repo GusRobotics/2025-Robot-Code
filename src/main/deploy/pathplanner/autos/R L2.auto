@@ -70,7 +70,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": "Right Autos",
   "choreoAuto": false
 }

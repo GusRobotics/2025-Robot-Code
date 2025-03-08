@@ -64,8 +64,8 @@ public class Shooter implements Subsystem {
             rightShooterMotor.set(-0.2);
         }
         else{
-            leftShooterMotor.set(0.26);
-            rightShooterMotor.set(-0.26);
+            leftShooterMotor.set(0.23);
+            rightShooterMotor.set(-0.23);
         }
             
     }
