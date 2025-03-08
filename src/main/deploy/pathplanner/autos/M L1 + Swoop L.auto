@@ -76,7 +76,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Mid Autos",
   "choreoAuto": false
 }

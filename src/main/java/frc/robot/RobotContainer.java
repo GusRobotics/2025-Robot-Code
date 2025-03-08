@@ -37,6 +37,7 @@ import frc.robot.commands.L1ShotCmd;
 import frc.robot.commands.AlignCmd;
 import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
+import frc.robot.commands.ResetSwerveCmd;
 
 
 
@@ -88,6 +89,8 @@ public class RobotContainer {
   private Trigger ElevatorL3 = baseController.triangle();
   private Trigger ElevatorL4 = baseController.circle();
   private Trigger AutoAlign = baseController.L1();
+  private Trigger ResetSwerve = baseController.R1();
+  
 
   /**
    * Use this method to define your trigger->command mappings.
@@ -124,6 +127,9 @@ public class RobotContainer {
 
     // auto align
     AutoAlign.whileTrue(new AlignCmd(limelight));
+
+    //reset swerve
+    ResetSwerve.whileTrue(new ResetSwerveCmd());
 
   }
 

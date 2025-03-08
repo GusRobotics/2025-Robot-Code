@@ -70,7 +70,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Left Autos",
   "choreoAuto": false
 }
