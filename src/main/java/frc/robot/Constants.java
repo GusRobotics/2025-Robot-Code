@@ -150,6 +150,7 @@ public final class Constants {
     public static final double GroundPos = 0;
     public static final double L1Pos = 5;
     public static final double L2Pos = 6.525;
+    public static final double L2PosAuto = 6.8;
     public static final double L3Pos = 13.4;
     public static final double L4Pos = 25.8;
 
