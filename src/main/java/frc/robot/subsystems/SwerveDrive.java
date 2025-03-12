@@ -396,15 +396,6 @@ public class SwerveDrive extends SubsystemBase {
 
         
     
-        // Cap the speeds
-        // forwardSpeed = Math.max(-0.25, Math.min(0.25, forwardSpeed));
-        // strafeSpeed = Math.max(-0.25, Math.min(0.25, strafeSpeed));
-        // rotationSpeed = Math.max(-0.5, Math.min(0.5, rotationSpeed));
-    
-        // Rotate the speeds by -45 degrees to compensate for the misalignment (only for forward/strafe)
-        //double angleOffset = Math.toRadians(-45);  // Rotate by -45 degrees
-        //double tempForwardSpeed = forwardSpeed * Math.cos(angleOffset) - strafeSpeed * Math.sin(angleOffset);
-        //double tempStrafeSpeed = forwardSpeed * Math.sin(angleOffset) + strafeSpeed * Math.cos(angleOffset);
     
         // Use the rotated speeds for forward and strafe
         //forwardSpeed = tempForwardSpeed;

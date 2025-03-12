@@ -125,7 +125,7 @@ public class RobotContainer {
     ElevatorL4.whileTrue(new ElevatorPositionCmd(elevator, Constants.L4Pos));
 
     // auto align
-    //AutoAlign.whileTrue(new AlignCmd(limelight));
+    AutoAlign.whileTrue(new AlignCmd(limelight));
 
 
   }
