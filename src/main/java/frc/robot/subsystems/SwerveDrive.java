@@ -341,72 +341,55 @@ public class SwerveDrive extends SubsystemBase {
         orange.setDesiredState(desiredState);
     }
 
-    public void alignSwerve(double targetX, double targetY, double targetRotation, double tagArea) {
+    public void alignSwerve(double targetX, double targetRotation, double tagArea) {
         
+        // Orange lights when tracking
         Shooter.lightstrip.set(Constants.orangeLights);
-        // Proportional constants (tune these based on testing)
-        //double kPX = 1;
-        double kPY = 3.25;
-        double kPTheta = 4.25;
 
+        // Base constants
         double rotationOIConstant = 0.6;
         double strafeOIConstant = 0.4;
 
+        // Determine acceptable error based on distance from tag
         if (tagArea > 8) {
-            rotationOIConstant = 0.1;
-            strafeOIConstant = 0.08;
-            kPY = 4.25;
-            kPTheta = 5;
+            rotationOIConstant = 0.075;
+            strafeOIConstant = 0.075;
         }
         else if (tagArea > 6) {
-            rotationOIConstant = 0.25;
-            strafeOIConstant = 0.15;
-            kPY = 3.75;
-            kPTheta = 4.75;
+            rotationOIConstant = 0.2;
+            strafeOIConstant = 0.2;
+            targetX *= 0.75;
         }
         else if (tagArea > 4) {
-            rotationOIConstant = 0.4;
+            rotationOIConstant = 0.25;
             strafeOIConstant = 0.25;
-            kPY = 3.5;
-            kPTheta = 4.5;
+            targetX *= 0.5;
         }
         
 
-        // Calculate speeds based on errors
-        //double forwardSpeed = targetX; //* kPX;
-        double strafeSpeed = -(targetY + 1.26) * kPY;
-        double rotationSpeed = -targetRotation * kPTheta;
+        // Regulate speed
+        double strafeSpeed = -targetX * 0.05;
+        double rotationSpeed = -targetRotation * 0.075;
 
+        //visualize
+        SmartDashboard.putNumber("strafe", strafeSpeed);
+        SmartDashboard.putNumber("rotation", rotationSpeed);
 
-        double maxRotationChangePerCycle = 0.015; // Adjust this value based on how smooth you want the changes to be
+        // Smooths movement out 
+        double maxRotationChangePerCycle = 0.015; 
         rotationSpeed = Math.max(rotationSpeed - maxRotationChangePerCycle, Math.min(rotationSpeed + maxRotationChangePerCycle, rotationSpeed));
-
-        double maxStrafeChangePerCycle = 0.01; // was 0.01
+        double maxStrafeChangePerCycle = 0.01; 
         strafeSpeed = Math.max(strafeSpeed - maxStrafeChangePerCycle, Math.min(strafeSpeed + maxStrafeChangePerCycle, strafeSpeed));
 
-        // SmartDashboard.putNumber("forward", forwardSpeed);
-        // SmartDashboard.putNumber("strafe", strafeSpeed);
-        // SmartDashboard.putNumber("rotate", rotationSpeed);
-        // SmartDashboard.putNumber("area", tagArea);
 
         
-
+        // Determine whether or not to move basd on error
         rotationSpeed = Math.abs(rotationSpeed) > rotationOIConstant ? rotationSpeed : 0.0;
         strafeSpeed = Math.abs(strafeSpeed) > strafeOIConstant ? strafeSpeed : 0.0;
 
         
-    
-    
-        // Use the rotated speeds for forward and strafe
-        //forwardSpeed = tempForwardSpeed;
-        //strafeSpeed = tempStrafeSpeed;
-    
-        //0.75
-        //rotationSpeed = Math.max(-1.3, Math.min(1.3, rotationSpeed));
-        
-        // Create a ChassisSpeeds object using robot-relative speeds (keep rotation unchanged)
-        //ChassisSpeeds chassisSpeeds = new ChassisSpeeds(forwardSpeed, strafeSpeed, rotationSpeed);
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, 1, rotationSpeed);
+
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, 0.75, rotationSpeed);
     
         // Use kinematics to calculate swerve module states
         SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);

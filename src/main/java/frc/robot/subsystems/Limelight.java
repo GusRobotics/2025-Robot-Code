@@ -60,8 +60,6 @@ public class Limelight extends SubsystemBase {
         SmartDashboard.putNumber("Target TX", getTX());
         SmartDashboard.putNumber("Robot X", robotPose.getX());
         SmartDashboard.putNumber("Robot Y", robotPose.getY());
-        SmartDashboard.putNumber("Robot Rotation", robotPose.getRotation().getZ());
-        SmartDashboard.putBoolean("Tracking", isTracking);
 
     }
 
@@ -77,31 +75,26 @@ public class Limelight extends SubsystemBase {
 
     /** Aligns robot to an AprilTag based on pose information */
     public void alignToAprilTag() {
-
-        // Check for invalid pose values
-        if (robotPose == null || (robotPose.getX() == 0 && robotPose.getY() == 0 && robotPose.getRotation().getZ() == 0)) {
+        // Get the target pose data from the Limelight
+        double[] targetPose = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace").getDoubleArray(new double[6]);
+    
+        // Check for invalid pose values (pose array length should be 6)
+        if (targetPose.length != 6 || (targetPose[0] == 0 && targetPose[1] == 0 && targetPose[4] == 0)) {
             System.out.println("Invalid pose data, skipping alignment.");
             return;
         }
-
-        // Extract translation and rotation information from pose
-        double targetX = robotPose.getX();
-        double targetY = robotPose.getY();
-        double targetRotation = robotPose.getRotation().getZ();
-
+    
+        // Extract the horizontal offset and yaw (rotation) from the target pose
+        double targetHorizontal = getTX();
+        double targetYaw = targetPose[4];  // Yaw is at index 4
+    
+        // Get the tag area
         double tagArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
-
-
-        // Check if the pose values are out of realistic range
-        if (Math.abs(targetX) > 10 || Math.abs(targetY) > 10 || Math.abs(targetRotation) > 180) {
-            System.out.println("Pose values out of range, skipping alignment.");
-            return;
-        }
-
-
-        // Only update the alignment if enough time has passed (to reduce jitter)
-        swerveDrive.alignSwerve(targetX, targetY, targetRotation, tagArea);
+    
+        // Update movement
+        swerveDrive.alignSwerve(targetHorizontal, targetYaw, tagArea);
     }
+    
 
 
     @Override
