@@ -14,7 +14,7 @@ public class Limelight extends SubsystemBase {
     private final NetworkTable table;
     private final NetworkTableEntry botPoseEntry;
     private Pose3d robotPose;
-    private boolean isTracking;
+    public static boolean isTracking;
     private final SwerveDrive swerveDrive;
 
 

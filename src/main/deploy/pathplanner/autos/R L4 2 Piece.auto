@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L V 1st Score"
+            "pathName": "R V 1st Score"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 2.0
                 }
               },
               {
@@ -68,12 +68,6 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 10.0
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -93,21 +87,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 10.0
+            "pathName": "R 1st Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L 1st Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L 2nd+3rd Score"
+            "pathName": "R 2nd Score"
           }
         },
         {
@@ -190,6 +178,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Left Autos",
+  "folder": "Right Autos",
   "choreoAuto": false
 }
