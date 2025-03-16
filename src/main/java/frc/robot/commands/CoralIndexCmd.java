@@ -43,10 +43,7 @@ public class CoralIndexCmd extends Command {
 
     @Override
     public void end(boolean terminated) {
-        if (!DriverStation.isAutonomous())
-        {
-            shooter.end();
-        }
+        shooter.end();
     }
 
     @Override
