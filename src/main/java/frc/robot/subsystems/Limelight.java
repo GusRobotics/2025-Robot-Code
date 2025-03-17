@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
 //import frc.robot.Constants;
 
 public class Limelight extends SubsystemBase {
@@ -16,6 +17,7 @@ public class Limelight extends SubsystemBase {
     private Pose3d robotPose;
     public static boolean isTracking;
     private final SwerveDrive swerveDrive;
+    private int counter;
 
 
     // Constructor
@@ -67,6 +69,7 @@ public class Limelight extends SubsystemBase {
     public void checkAndAlignToAprilTag() {
         if (hasTarget()) {
             isTracking = true;
+            updatePose(); // added (to make sure we aren't using old data)
             alignToAprilTag();
         } else {
             isTracking = false;
@@ -99,10 +102,17 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updatePose(); 
-        display();    
+        counter++;  // Increment the counter
+
+        if (counter >= 3 || DriverStation.isAutonomous()) {  // Check if this is the third time periodic is called
+            updatePose();  // Call updatePose every third time
+            counter = 0;  // Reset the counter after updatePose is called
+        }
+
+        display();  // Always display information on SmartDashboard
     }
 }
+
 
 
 

@@ -36,22 +36,22 @@ public class AlignCmd extends Command {
         }
     }
 
-    @Override
-    public boolean isFinished() {
-        // Command ends if isTracking is false for more than 5 consecutive cycles or the time limit is exceeded
-        return falseTrackingCount > 5 || timer.hasElapsed(timeLimit);
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     // Command ends if isTracking is false for more than 5 consecutive cycles or the time limit is exceeded
+    //     return falseTrackingCount > 5 || timer.hasElapsed(timeLimit);
+    // }
 
-    @Override
-    public void end(boolean interrupted) {
-        // Actions to take when the command ends, either due to timeout or interruption
-        timer.stop();  // Stop the timer
-        if (interrupted) {
-            System.out.println("Alignment interrupted.");
-        } else if (falseTrackingCount > 5) {
-            System.out.println("Alignment ended due to lost tracking.");
-        } else if (timer.hasElapsed(timeLimit)) {
-            System.out.println("Alignment ended due to time limit.");
-        }
-    }
+    // @Override
+    // public void end(boolean interrupted) {
+    //     // Actions to take when the command ends, either due to timeout or interruption
+    //     timer.stop();  // Stop the timer
+    //     if (interrupted) {
+    //         System.out.println("Alignment interrupted.");
+    //     } else if (falseTrackingCount > 5) {
+    //         System.out.println("Alignment ended due to lost tracking.");
+    //     } else if (timer.hasElapsed(timeLimit)) {
+    //         System.out.println("Alignment ended due to time limit.");
+    //     }
+    // }
 }
