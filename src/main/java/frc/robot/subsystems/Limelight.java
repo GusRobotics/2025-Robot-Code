@@ -76,6 +76,26 @@ public class Limelight extends SubsystemBase {
         }
     }
 
+    public void checkAndAlignToLAprilTag() {
+        if (hasTarget()) {
+            isTracking = true;
+            updatePose(); // added (to make sure we aren't using old data)
+            alignToAprilTag();
+        } else {
+            isTracking = false;
+        }
+        
+        double tagArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
+        
+        // If tagArea is >= 10, initiate leftward movement of 13 inches
+        if (tagArea >= 10) {
+            // Example speed of 1 m/s, adjust as necessary
+            swerveDrive.LeftAlign(1, 1.0); // Moves 13 inches left at 1 m/s
+        }
+    }
+    
+
+
     /** Aligns robot to an AprilTag based on pose information */
     public void alignToAprilTag() {
         // Get the target pose data from the Limelight
@@ -83,7 +103,6 @@ public class Limelight extends SubsystemBase {
     
         // Check for invalid pose values (pose array length should be 6)
         if (targetPose.length != 6 || (targetPose[0] == 0 && targetPose[1] == 0 && targetPose[4] == 0)) {
-            System.out.println("Invalid pose data, skipping alignment.");
             return;
         }
     

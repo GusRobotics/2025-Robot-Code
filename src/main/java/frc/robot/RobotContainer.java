@@ -35,6 +35,7 @@ import frc.robot.commands.CoralIndexCmd;
 import frc.robot.commands.CoralShotCmd;
 import frc.robot.commands.L1ShotCmd;
 import frc.robot.commands.AlignCmd;
+import frc.robot.commands.AlignLCmd;
 import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
 import frc.robot.commands.ResetSwerveCmd;
@@ -88,7 +89,10 @@ public class RobotContainer {
   private Trigger ElevatorL2 = baseController.cross();
   private Trigger ElevatorL3 = baseController.triangle();
   private Trigger ElevatorL4 = baseController.circle();
+
+  // limelight
   private Trigger AutoAlign = baseController.L1();
+  private Trigger AutoLAlign = baseController.R1();
   
 
   /**
@@ -126,6 +130,7 @@ public class RobotContainer {
 
     // auto align
     AutoAlign.whileTrue(new AlignCmd(limelight));
+    AutoLAlign.whileTrue(new AlignLCmd(limelight));
 
 
   }
@@ -154,6 +159,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
     NamedCommands.registerCommand("AutoAlign", new AlignCmd(limelight));
+    NamedCommands.registerCommand("LAutoAlign", new AlignLCmd(limelight));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

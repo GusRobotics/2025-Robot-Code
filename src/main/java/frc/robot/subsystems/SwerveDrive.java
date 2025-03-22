@@ -23,6 +23,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 //import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
 //import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.DriverStation.Alliance;
 //import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -341,14 +342,56 @@ public class SwerveDrive extends SubsystemBase {
         orange.setDesiredState(desiredState);
     }
 
+    public void LeftAlign(double speed, double time) {
+
+        // Orange lights when tracking
+        Shooter.lightstrip.set(Constants.orangeLights);
+
+        // Set forward speed to 0 as we're not moving forward, just strafing
+        double forwardSpeed = 0.0;
+
+        // Since we're strafing left, we use the negative of the input speed (strafe left is negative)
+        double strafeSpeed = -speed;
+
+        // Rotation is not needed, so we set rotation speed to 0
+        double rotationSpeed = 0.0;
+
+        // Set chassis speeds for moving left
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, forwardSpeed, rotationSpeed);
+
+        // Use kinematics to calculate swerve module states
+        SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+        // Normalize speeds if necessary to ensure no module exceeds max speed
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
+
+        // Set the desired state for each swerve module
+        this.setModuleStates(moduleStates);
+
+        // Wait for the specified time before stopping
+        Timer.delay(time);
+
+        // Stop the movement after the delay
+        stopMovement();
+    }
+
+    // Helper function to stop the robot's movement
+    public void stopMovement() {
+        ChassisSpeeds stopSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+        SwerveModuleState[] stopStates = Constants.kDriveKinematics.toSwerveModuleStates(stopSpeeds);
+        this.setModuleStates(stopStates);
+    }
+
+
+
     public void alignSwerve(double targetX, double targetRotation, double tagArea) {
 
         // Orange lights when tracking
         Shooter.lightstrip.set(Constants.orangeLights);
         
-        double forwardSpeed = 0.75;
+        double forwardSpeed = 0.75; // was 0.75
     
-        targetRotation = targetRotation + 3.5;
+        targetRotation = targetRotation + 0.95;
     
         // Determine acceptable error based on distance from tag
         if (tagArea > 8) {
