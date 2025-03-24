@@ -91,8 +91,8 @@ public class RobotContainer {
   private Trigger ElevatorL4 = baseController.circle();
 
   // limelight
-  private Trigger AutoAlign = baseController.L1();
-  private Trigger AutoLAlign = baseController.R1();
+  private Trigger AutoAlign = baseController.R1();
+  private Trigger AutoLAlign = baseController.L1();
   
 
   /**
@@ -130,7 +130,7 @@ public class RobotContainer {
 
     // auto align
     AutoAlign.whileTrue(new AlignCmd(limelight));
-    AutoLAlign.whileTrue(new AlignLCmd(limelight));
+    AutoLAlign.whileTrue(new AlignLCmd(limelight, drive));
 
 
   }
@@ -159,7 +159,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("L3", new ElevatorPositionCmd(elevator, Constants.L3Pos));
     NamedCommands.registerCommand("L4", new ElevatorPositionCmd(elevator, Constants.L4Pos));
     NamedCommands.registerCommand("AutoAlign", new AlignCmd(limelight));
-    NamedCommands.registerCommand("LAutoAlign", new AlignLCmd(limelight));
+    NamedCommands.registerCommand("LAutoAlign", new AlignLCmd(limelight, drive));
     
     // Set default command for the shooter to run Coral Index immediately
     shooter.setDefaultCommand(new CoralIndexCmd(shooter, true, false));

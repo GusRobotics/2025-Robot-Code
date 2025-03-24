@@ -62,6 +62,7 @@ public class Limelight extends SubsystemBase {
         SmartDashboard.putNumber("Target TX", getTX());
         SmartDashboard.putNumber("Robot X", robotPose.getX());
         SmartDashboard.putNumber("Robot Y", robotPose.getY());
+        SmartDashboard.putNumber("Area", getTagArea());
 
     }
 
@@ -85,13 +86,12 @@ public class Limelight extends SubsystemBase {
             isTracking = false;
         }
         
+    
+    }
+
+    public double getTagArea() {
         double tagArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
-        
-        // If tagArea is >= 10, initiate leftward movement of 13 inches
-        if (tagArea >= 10) {
-            // Example speed of 1 m/s, adjust as necessary
-            swerveDrive.LeftAlign(1, 1.0); // Moves 13 inches left at 1 m/s
-        }
+        return tagArea;
     }
     
 
@@ -123,7 +123,7 @@ public class Limelight extends SubsystemBase {
     public void periodic() {
         counter++;  // Increment the counter
 
-        if (counter >= 3 || DriverStation.isAutonomous()) {  // Check if this is the third time periodic is called
+        if (counter >= 5 || DriverStation.isAutonomous()) {  // Check if this is the third time periodic is called
             updatePose();  // Call updatePose every third time
             counter = 0;  // Reset the counter after updatePose is called
         }

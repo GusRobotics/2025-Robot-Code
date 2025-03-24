@@ -38,6 +38,7 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule red;
     private final SwerveModule green;
     private final SwerveModule orange;
+    private final Timer timer = new Timer();
     private SlewRateLimiter xLimiter = new SlewRateLimiter(1);
     private SlewRateLimiter yLimiter = new SlewRateLimiter(1);
     private SlewRateLimiter turningLimiter = new SlewRateLimiter(1);
@@ -342,37 +343,49 @@ public class SwerveDrive extends SubsystemBase {
         orange.setDesiredState(desiredState);
     }
 
+    //stuff for leftalign function
+    public boolean isTimerRunning() {
+        return timer.get() > 0 && timer.get() < 3;
+    }
+
+    public void startLeftAlignTimer() {
+        timer.restart();
+        timer.start();
+    }
+
     public void LeftAlign(double speed, double time) {
 
-        // Orange lights when tracking
-        Shooter.lightstrip.set(Constants.orangeLights);
-
-        // Set forward speed to 0 as we're not moving forward, just strafing
-        double forwardSpeed = 0.0;
-
-        // Since we're strafing left, we use the negative of the input speed (strafe left is negative)
-        double strafeSpeed = -speed;
-
-        // Rotation is not needed, so we set rotation speed to 0
-        double rotationSpeed = 0.0;
-
-        // Set chassis speeds for moving left
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, forwardSpeed, rotationSpeed);
-
-        // Use kinematics to calculate swerve module states
-        SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-
-        // Normalize speeds if necessary to ensure no module exceeds max speed
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
-
-        // Set the desired state for each swerve module
-        this.setModuleStates(moduleStates);
-
-        // Wait for the specified time before stopping
-        Timer.delay(time);
-
-        // Stop the movement after the delay
-        stopMovement();
+        // Keep moving left until the time elapses
+        if (timer.get() < time) {
+    
+            // Orange lights when tracking
+            Shooter.lightstrip.set(Constants.orangeLights);
+    
+            // Set forward speed to 0 as we're not moving forward, just strafing
+            double forwardSpeed = 0.0;
+    
+            // Since we're strafing left, we use the negative of the input speed (strafe left is negative)
+            double strafeSpeed = speed;
+    
+            // Rotation is not needed, so we set rotation speed to 0
+            double rotationSpeed = 0.0;
+    
+            // Set chassis speeds for moving left
+            ChassisSpeeds chassisSpeeds = new ChassisSpeeds(strafeSpeed, forwardSpeed, rotationSpeed);
+    
+            // Use kinematics to calculate swerve module states
+            SwerveModuleState[] moduleStates = Constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    
+            // Normalize speeds if necessary to ensure no module exceeds max speed
+            SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.kPhysicalMaxSpeedMetersPerSecond);
+    
+            // Set the desired state for each swerve module
+            this.setModuleStates(moduleStates);
+    
+        } else {
+            // Stop the movement once the timer exceeds the given time
+            stopMovement();
+        }
     }
 
     // Helper function to stop the robot's movement
