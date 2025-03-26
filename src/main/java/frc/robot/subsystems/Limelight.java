@@ -123,7 +123,7 @@ public class Limelight extends SubsystemBase {
     public void periodic() {
         counter++;  // Increment the counter
 
-        if (counter >= 5 || DriverStation.isAutonomous()) {  // Check if this is the third time periodic is called
+        if (counter >=10 || DriverStation.isAutonomous()) {  // was 5
             updatePose();  // Call updatePose every third time
             counter = 0;  // Reset the counter after updatePose is called
         }
