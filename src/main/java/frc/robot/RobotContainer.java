@@ -33,7 +33,7 @@ import frc.robot.commands.ElevatorPositionCmd;
 import frc.robot.commands.ElevatorODownCmd;
 import frc.robot.commands.CoralIndexCmd;
 import frc.robot.commands.CoralShotCmd;
-import frc.robot.commands.L1ShotCmd;
+import frc.robot.commands.AutoShotCmd;
 import frc.robot.commands.AlignCmd;
 import frc.robot.commands.AlignLCmd;
 import frc.robot.commands.ClimberDownCmd;
@@ -152,7 +152,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("ClimberDown", new ClimberDownCmd(climber, true, false));
     NamedCommands.registerCommand("ClimberUp", new ClimberUpCmd(climber, true, false));
     NamedCommands.registerCommand("CoralShot", new CoralShotCmd(shooter));
-    NamedCommands.registerCommand("L1Shot", new L1ShotCmd(shooter));
+    NamedCommands.registerCommand("AutoShot", new AutoShotCmd(shooter));
     NamedCommands.registerCommand("Ground", new ElevatorPositionCmd(elevator, Constants.GroundPos));
     NamedCommands.registerCommand("L1", new ElevatorPositionCmd(elevator, Constants.L1Pos));
     NamedCommands.registerCommand("L2", new ElevatorPositionCmd(elevator, Constants.L2PosAuto));

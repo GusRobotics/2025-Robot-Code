@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 //import frc.robot.RobotContainer;
 
-public class L1ShotCmd extends Command {
+public class AutoShotCmd extends Command {
     private Shooter shooter;
 
-    public L1ShotCmd(Shooter shooter) {
+    public AutoShotCmd(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
@@ -18,12 +18,12 @@ public class L1ShotCmd extends Command {
     // Start
     @Override
     public void initialize() {
-        shooter.L1Shot();
+        shooter.AutoShot();
     }
 
     @Override
     public void execute() {
-        shooter.L1Shot();
+        shooter.AutoShot();
     }
 
     @Override
