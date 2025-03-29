@@ -7,17 +7,17 @@ import frc.robot.subsystems.Limelight;
 public class AlignCmd extends Command {
     private final Limelight limelight;
     private final Timer timer = new Timer();  // Timer to track command duration
-    private int falseTrackingCount = 0;  // Counter to track how many times isTracking is false
-    private final double timeLimit = 1.0;  // Time limit in seconds
+    //private int falseTrackingCount = 0;  // Counter to track how many times isTracking is false
+    //private final double timeLimit = 1.0;  // Time limit in seconds
 
     public AlignCmd(Limelight limelight) {
         this.limelight = limelight;
-        addRequirements(limelight);  // Ensure the subsystem is required
+        addRequirements(limelight);  
     }
 
     @Override
     public void initialize() {
-        falseTrackingCount = 0;  // Reset the counter when the command is initialized
+        //falseTrackingCount = 0;  // Reset the counter when the command is initialized
         timer.reset();  // Reset the timer
         timer.start();  // Start the timer
     }
@@ -27,13 +27,13 @@ public class AlignCmd extends Command {
         // Call the checkAndAlignToAprilTag method to manage tracking and alignment
         limelight.checkAndAlignToAprilTag();
 
-        // If tracking is false, increment the false tracking count
-        if (!Limelight.isTracking) {
-            falseTrackingCount++;  // Increments when tracking is lost
-        } else {
-            // Reset the counter if tracking is successful
-            falseTrackingCount = 0;
-        }
+        // // If tracking is false, increment the false tracking count
+        // if (!Limelight.isTracking) {
+        //     falseTrackingCount++;  // Increments when tracking is lost
+        // } else {
+        //     // Reset the counter if tracking is successful
+        //     falseTrackingCount = 0;
+        // }
     }
 
     // @Override
