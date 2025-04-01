@@ -38,8 +38,8 @@ public class Climber implements Subsystem {
     }
 
     public void reverseClimber() {
-        leftClimberMotor.set(0.5);
-        rightClimberMotor.set(-0.5);
+        leftClimberMotor.set(0.75);
+        rightClimberMotor.set(-0.75);
     }
 
     /** Ends the elevator function */
