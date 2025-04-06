@@ -19,7 +19,7 @@ public class Shooter implements Subsystem {
     private SparkMax rightShooterMotor; 
     public static Spark lightstrip = new Spark(Constants.ledChannel);
 
-    private AnalogInput distSensor = new AnalogInput(0);
+    private AnalogInput distSensor = new AnalogInput(3);
 
     // Init
     public Shooter() {
@@ -59,9 +59,13 @@ public class Shooter implements Subsystem {
     
     public void enableShooter() {
         lightstrip.set(Constants.greenLights);
-        if (Elevator.targetPosition < 15){
+        if (Elevator.targetPosition < 10){
             leftShooterMotor.set(0.2);
             rightShooterMotor.set(-0.2);
+        }
+        else if (Elevator.targetPosition < 15){
+            leftShooterMotor.set(0.185);
+            rightShooterMotor.set(-0.185);
         }
         else{
             leftShooterMotor.set(0.22); // was 23

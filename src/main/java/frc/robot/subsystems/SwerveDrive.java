@@ -403,6 +403,10 @@ public class SwerveDrive extends SubsystemBase {
         Shooter.lightstrip.set(Constants.orangeLights);
         
         double forwardSpeed = 0.75; // was 0.75
+        if (!DriverStation.isAutonomous()){
+            forwardSpeed = 1.25;
+        }
+
     
         targetRotation = targetRotation + 0.95;
     

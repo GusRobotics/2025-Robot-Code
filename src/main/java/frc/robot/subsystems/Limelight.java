@@ -109,6 +109,7 @@ public class Limelight extends SubsystemBase {
         // Extract the horizontal offset and yaw (rotation) from the target pose
         double targetHorizontal = getTX();
         double targetYaw = targetPose[4];  // Yaw is at index 4
+        //targetYaw += 0.1;
     
         // Get the tag area
         double tagArea = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
@@ -123,7 +124,7 @@ public class Limelight extends SubsystemBase {
     public void periodic() {
         counter++;  // Increment the counter
 
-        if (counter >=10 || DriverStation.isAutonomous()) {  // was 5
+        if (counter >=12 || DriverStation.isAutonomous()) {  // was 5
             updatePose();  // Call updatePose every third time
             counter = 0;  // Reset the counter after updatePose is called
         }

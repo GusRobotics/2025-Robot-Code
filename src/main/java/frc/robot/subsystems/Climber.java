@@ -37,6 +37,11 @@ public class Climber implements Subsystem {
         rightClimberMotor.set(0);
     }
 
+    public void enableSlowClimber() {
+        leftClimberMotor.set(0.25);
+        rightClimberMotor.set(-0.25);
+    }
+
     public void reverseClimber() {
         leftClimberMotor.set(0.75);
         rightClimberMotor.set(-0.75);

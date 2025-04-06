@@ -38,6 +38,7 @@ import frc.robot.commands.AlignCmd;
 import frc.robot.commands.AlignLCmd;
 import frc.robot.commands.ClimberDownCmd;
 import frc.robot.commands.ClimberUpCmd;
+import frc.robot.commands.ClimberDownSlowCmd;
 //import frc.robot.commands.ResetSwerveCmd;
 
 
@@ -75,6 +76,7 @@ public class RobotContainer {
   // coral shooter
   private static final double TRIGGER_THRESHOLD = 0.1;
   private Trigger CoralShot = new Trigger(() -> baseController.getRightX() > TRIGGER_THRESHOLD);
+  private Trigger SlowClimb = new Trigger(() -> baseController.getL2Axis() > TRIGGER_THRESHOLD);
 
   // coral indexer
   public static boolean isCoralIndexEnabled = true;
@@ -121,6 +123,9 @@ public class RobotContainer {
 
     // climber up
     ClimberUp.whileTrue(new ClimberUpCmd(climber, true, false));
+
+    // slow climb
+    SlowClimb.whileTrue(new ClimberDownSlowCmd(climber, true, false));
 
     // elevator presets
     ElevatorBottom.whileTrue(new ElevatorPositionCmd(elevator, Constants.GroundPos));
