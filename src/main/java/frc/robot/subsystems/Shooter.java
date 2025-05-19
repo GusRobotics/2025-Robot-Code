@@ -60,16 +60,16 @@ public class Shooter implements Subsystem {
     public void enableShooter() {
         lightstrip.set(Constants.greenLights);
         if (Elevator.targetPosition < 10){
-            leftShooterMotor.set(0.2);
-            rightShooterMotor.set(-0.2);
+            leftShooterMotor.set(0.195); //was .2
+            rightShooterMotor.set(-0.195);
         }
         else if (Elevator.targetPosition < 15){
-            leftShooterMotor.set(0.185);
+            leftShooterMotor.set(0.185); //was .185
             rightShooterMotor.set(-0.185);
         }
         else{
-            leftShooterMotor.set(0.22); // was 23
-            rightShooterMotor.set(-0.22);
+            leftShooterMotor.set(0.2175); // was 23
+            rightShooterMotor.set(-0.2175);
         }
             
     }
